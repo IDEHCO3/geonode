@@ -53,13 +53,13 @@ def putKnowledge(request):
 
     elif (request.POST['objTipo'] == 'mapa'):
         k = Knowledge(usuario = Profile.objects.get(pk = request.POST['userID']),
-                      mapa = Layer.objects.get(pk = request.POST['objID']),
+                      mapa = Map.objects.get(pk = request.POST['objID']),
                       frequencia = Frequencia.objects.get(pk = request.POST['frequencia']),
                       whatFor = request.POST['whatFor'],
                       desirable_scale = request.POST['desirable_scale'],
                       missing_information = request.POST['missing_information'],
                       resolution = request.POST['resolution'])
-        resposta = {'destino' : 'map_detail', 'nome' : 'geonode:' + k.mapa.name}  
+        resposta = {'destino' : 'map_detail', 'nome' : str(k.mapa.id)}
         k.save() 
     
     return HttpResponseRedirect(reverse(resposta['destino'], args = (resposta['nome'],)))

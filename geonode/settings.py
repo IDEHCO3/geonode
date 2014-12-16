@@ -330,6 +330,13 @@ LOGGING = {
         }
     },
     'handlers': {
+        'applogfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(PROJECT_ROOT, 'geonode_indeco.log'),
+            'maxBytes': 1024*1024*15, # 15MB
+            'backupCount': 10,
+        },
         'null': {
             'level': 'ERROR',
             'class': 'django.utils.log.NullHandler',

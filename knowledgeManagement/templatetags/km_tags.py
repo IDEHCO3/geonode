@@ -4,7 +4,7 @@ from knowledgeManagement.models import Knowledge, Frequencia
 
 register = template.Library()
 
-@register.inclusion_tag('knowledgeManagement/_in_knowledge.html')
+@register.inclusion_tag('knowledgeManagement/_in_knowledge.html', takes_context = True)
 def mapKnowledgeTag(context):
     k_list = Knowledge.objects.filter(mapa = context['resource']).order_by('-pub_date')[:5]
     f_list = Frequencia.objects.all().order_by('-id')    
