@@ -1,5 +1,6 @@
 {% extends "layers/layer_base.html" %}
 {% load i18n %}
+{% load km_tags %}
 {% load dialogos_tags %}
 {% load agon_ratings_tags %}
 {% load bootstrap_tags %}
@@ -90,6 +91,10 @@
         {% with resource as obj %}
           {% include "_comments.html" %}
         {% endwith %}
+      </article>
+
+      <article id="knowledge" class="tab-pane">
+          {% layerKnowledgeTag %}
       </article>
 
       {% if GEOGIT_ENABLED and resource.link_set.geogit %}

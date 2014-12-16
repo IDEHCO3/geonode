@@ -308,6 +308,9 @@ INSTALLED_APPS = (
     'polymorphic',
     'guardian',
 
+    # Our plugin
+    'knowledgeManagement',
+
 ) + GEONODE_APPS
 
 LOGGING = {

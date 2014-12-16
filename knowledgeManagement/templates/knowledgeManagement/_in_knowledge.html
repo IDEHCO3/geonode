@@ -1,0 +1,116 @@
+{% load dialogos_tags %}
+{% load bootstrap_tags %}
+{% load pagination_tags %}
+{% load friendly_loader %}
+{% load url from future %}
+{% friendly_load avatar_tags %}
+{% load i18n %}
+
+
+<div class="comments paginate paginate-manual">
+    <header>
+        <h3>{% trans 'Related information' %}</h3>
+    </header>
+    {% csrf_token %}
+    {% if request.user.is_authenticated %}
+        <div class="clearfix">
+           <button data-target="#form_post_knowledge_div" class="btn btn-primary btn-md" data-toggle="modal">{% trans 'Add use information' %}</button>
+        </div>
+    {% else %}
+        <div class="clearfix">
+            <p class="pull-right">{% trans 'Log in to add use information' %}</p>
+        </div>
+    {% endif %}
+
+    {% if conhecimentos %}
+    <div class="paginate-contents col-md-9">
+
+        {% autopaginate conhecimentos 1 %}
+        {% for conhecimento in conhecimentos %}
+
+            <div class="avatar span1"><a href="{{ conhecimento.get_absolute_url }}">{% avatar conhecimento.usuario 40 %} </a></div>
+            <div class="pull-left span7">
+                <p><strong><a href="{% url 'km:detail' conhecimento.id %}"> {{ conhecimento.whatFor }}</a> </strong></p>
+                <p><strong>{% trans 'Frequency:' %}</strong> {{ conhecimento.frequencia }}</p>
+                <footer>
+                    <div class="author clearfix span7">
+                        <p>{% trans 'By' %} <a href="{{ conhecimento.get_absolute_url }}" rel="usuario">{{ conhecimento.usuario.username }}</a> {% trans 'on' %} <time>{{ conhecimento.pub_date|date:"M j, Y" }}</time></p>
+                    </div>
+                </footer>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-4">
+        {% paginate %}
+    </div>
+ 
+
+{% else %}
+    <p>{% trans 'There are no data for this object.' %}</p>    
+{% endif %}
+
+</div>
+
+
+<!-- Modal -->
+{% if request.user.is_authenticated %}
+
+<div id="form_post_knowledge_div" class="modal fade" aria-hidden="false" aria-labelledby="ModalKM"  tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>{% trans 'Add use information' %}</h3>
+            </div>
+            <form action="{% url 'km:inputKnowledge' %}" method="post">
+            <div class="modal-body">
+                {% csrf_token %}
+                <input type="hidden" id="objTipo" name="objTipo" value="{{ tipo }}" />
+                <input type="hidden" id="objID" name="objID" value="{{ objID }}" />
+                <input type="hidden" id="userjID" name="userID" value="{{ request.user.id }}" />
+
+                <ul>
+                    <li>
+                        <label for="desirable_scale">{% trans 'What is the desirable scale of the layer?' %}</label>
+                        <span> 1 : <input type="number" id="desirable_scale" name="desirable_scale" /></span>
+                    </li>
+
+                    <li>
+                        <label for="resolution">{% trans 'What is the resolution of the image?' %}</label>
+                        <select id="resolution" name="resolution">
+                            <option value="480x640">480x640</option>
+                        <option value="720x1280">720x1280</option>
+                        <option value="1080x1920">1080x1920</option>
+                        <select/>
+                    </li>
+
+                    <li>
+                        <label for="whatFor">{% trans 'What for this object is used?' %}</label>
+                        <input type="text" name="whatFor" id="whatFor" maxlength="200"/>
+                    </li>
+
+                    <li>
+                        <label for="frequencia">{% trans 'Which is the desired frequency of update for this object?' %}</label>
+                        <select name="frequencia" id="frequencia">
+                        {% for frequencia in frequencias %}
+                            <option value="{{ frequencia.id }}">{{ frequencia }}</option>
+                        {% endfor %}
+                        </select>
+                    </li>
+
+                    <li>
+                        <label for="missing_information">{% trans 'Type some additional information.' %}</label>
+                        <input type="text" id="missing_information" name="missing_information"/>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
+                <button type="submit" id="knowledge_submit_btn" class="btn btn-success">{% trans 'Send' %}</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}

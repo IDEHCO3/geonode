@@ -1,5 +1,6 @@
 {% extends "maps/map_base.html" %}
 {% load i18n %}
+{% load km_tags %}
 {% load dialogos_tags %}
 {% load agon_ratings_tags %}
 {% load url from future %}
@@ -40,6 +41,11 @@
         <article class="tab-pane" id="comments">
         {% include "_comments.html" %}
         </article>
+
+         <article id="knowledge" class="tab-pane">
+           {% mapKnowledgeTag %}
+         </article>
+
         <article class="tab-pane" id="rate">
         <!-- TODO: Move this to a reusable template snippet -->
           {% if request.user.is_authenticated %}

@@ -96,6 +96,9 @@ urlpatterns = patterns('',
                        (r'^groups/', include('geonode.groups.urls')),
                        (r'^documents/', include('geonode.documents.urls')),
                        (r'^services/', include('geonode.services.urls')),
+
+                       (r'^knowledgeManagement/', include('knowledgeManagement.urls', namespace='km')),
+
                        url(r'', include(api.urls)),
                        )
 
