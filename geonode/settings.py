@@ -277,6 +277,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
 
     # Third party apps
+    'maploom',
 
     # Utility
     'pagination',
