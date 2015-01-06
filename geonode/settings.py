@@ -309,8 +309,9 @@ INSTALLED_APPS = (
     'polymorphic',
     'guardian',
 
-    # Our plugin
+    # Ours plugins
     'knowledgeManagement',
+    'layerEditor',
 
 ) + GEONODE_APPS
 
@@ -449,7 +450,7 @@ ACTSTREAM_SETTINGS = {
 }
 
 # Settings for Social Apps
-REGISTRATION_OPEN = False
+REGISTRATION_OPEN = True
 ACCOUNT_EMAIL_CONFIRMATION_EMAIL = False
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 ACCOUNT_APPROVAL_REQUIRED = False

@@ -100,6 +100,7 @@ urlpatterns = patterns('',
                        (r'^services/', include('geonode.services.urls')),
 
                        (r'^knowledgeManagement/', include('knowledgeManagement.urls', namespace='km')),
+                       (r'^layerEditor/', include('layerEditor.urls', namespace='ledt')),
 
                        url(r'', include(api.urls)),
                        )
