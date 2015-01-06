@@ -3,22 +3,26 @@
 {% load i18n %}
 {% load url from future %}
 {% block body %}
-    <div class="row">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <h4><b>{% trans 'Type of layer' %}</b></h4>
-                <select class="form-control">
-                    <option>{% trans 'Point' %}</option>
-                    <option>{% trans 'Line' %}</option>
-                    <option>{% trans 'Polygon' %}</option>
-                </select>
-            </li>
-            <li class="list-group-item">
-                <h4><b>{% trans 'Attributes' %}</b></h4>
-            </li>
-        </ul>
-    </div>
-    <div class="row">
-        <button class="btn btn-lg btn-primary pull-right">{% trans 'Create layer' %}</button>
+    <div class="col-md-12">
+        <form>
+            <div class="row">
+                <ul class="list-group">
+                    <li class="list-group-item form-group">
+                        <h4><b>{% trans 'Type of layer' %}</b></h4>
+                        <select class="form-control">
+                            <option>{% trans 'Point' %}</option>
+                            <option>{% trans 'Line' %}</option>
+                            <option>{% trans 'Polygon' %}</option>
+                        </select>
+                    </li>
+                    <li class="list-group-item form-group">
+                        <h4><b>{% trans 'Attributes' %}</b></h4>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-lg btn-primary pull-right">{% trans 'Create layer' %}</button>
+            </div>
+        </form>
     </div>
 {% endblock %}
