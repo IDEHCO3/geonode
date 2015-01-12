@@ -8,7 +8,8 @@
         <div class="row page-header">
             <h4><b>{% trans 'Layer attributes' %}</b></h4>
         </div>
-        <form role="form" action="#" method="get">
+        <form role="form" action="{% url 'ledt:create_layer' %}" method="post">
+        {% csrf_token %}
             <div class="row">
                 <div id="attribute_line" class="hidden">
                     <div id="attr_l">
