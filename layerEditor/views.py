@@ -29,7 +29,7 @@ def create_layer(request):
         if( attributes[attribute] == '' ):
             return HttpResponseRedirect(reverse('ledt:new_layer'))
         if( "attr_name" in attribute ):
-            f = attributes[attribute].__getitem__(0)
+            f = attributes[attribute]
             f = f.encode("latin_1")
             user_shape.field(f)
 
