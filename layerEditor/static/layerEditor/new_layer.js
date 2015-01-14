@@ -1,4 +1,4 @@
-var num_atr = 0;
+var num_atr = 1;
 $(document).ready(function(){
     $("#add-line").click(function(){
         var $atr_list = $("#attributes-list");
@@ -19,7 +19,7 @@ $(document).ready(function(){
     });
 
     $("#remove-line").click(function(){
-        if( num_atr != 0){
+        if( num_atr > 1){
             $("#attr_l"+num_atr.toString()).remove();
             num_atr--;
         }

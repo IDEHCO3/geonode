@@ -4,6 +4,7 @@
 {% load i18n %}
 {% load url from future %}
 {% block body %}
+    {% if request.user.is_authenticated %}
     <div class="row">
         <div class="row page-header">
             <h4><b>{% trans 'Layer attributes' %}</b></h4>
@@ -32,6 +33,12 @@
                             <option>{% trans 'Polygon' %}</option>
                         </select>
                     </div>
+                    <div id="attr_l1">
+                        <div class="row form-group">
+                            <label>{% trans 'Attribute name' %}</label>
+                            <input id="attr_name1" type="text" class="form-control" value="id" name="attr_name1" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                         <button id="remove-line" type="button" class="btn btn-lg btn-danger pull-left">{% trans 'Remove attribute' %}</button>
@@ -46,4 +53,7 @@
             </div>
         </form>
     </div>
+    {% else %}
+        <p>{% trans 'You need to be logged in.' %}</p>
+    {%  endif %}
 {% endblock %}

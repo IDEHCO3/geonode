@@ -12,7 +12,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # Create your views here.
 def new_layer(request):
     return render_to_response('layerEditor/new_layer.html',
-        RequestContext(request, {}))
+        RequestContext(request, {"request": request}))
 
 def create_layer(request):
 
@@ -28,8 +28,10 @@ def create_layer(request):
     if( layer_name == "" ):
         return HttpResponseRedirect(reverse('ledt:new_layer'))
 
+    if( attributes["attr_name1"] != "id" ):
+        return HttpResponseRedirect(reverse('ledt:new_layer'))
+
     user_shape = sf.Writer(marker_type[layer_type])
-    user_shape.field("id")
 
     for attribute in attributes:
         if( attributes[attribute] == '' ):
