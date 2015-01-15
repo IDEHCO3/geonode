@@ -52,8 +52,8 @@ def create_layer(request):
 
     user_shape.save(path_file)
 
-    command_add_layer = "python manage.py importlayers "
-    #command_add_layer += "-u aluizio "
+    command_add_layer = "python manage.py importlayers -v2 "
+    command_add_layer += "-u aluizio "
     command_add_layer += path_file + ".shp"
     call(command_add_layer, shell=True)
 

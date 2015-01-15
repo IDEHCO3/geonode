@@ -20,6 +20,8 @@
 
 # Django settings for the GeoNode project.
 import os
+from kombu import Queue
+from celery_app import app  # flake8: noqa
 
 #
 # General Django development settings
@@ -256,6 +258,7 @@ GEONODE_APPS = (
     # it's signals may rely on other apps' signals.
     'geonode.geoserver',
     'geonode.upload',
+    'geonode.tasks'
 )
 
 INSTALLED_APPS = (
@@ -290,6 +293,7 @@ INSTALLED_APPS = (
     'autocomplete_light',
     'mptt',
     'modeltranslation',
+    'djcelery',
 
     # Theme
     "pinax_theme_bootstrap_account",
@@ -509,7 +513,7 @@ OGC_SERVER = {
         'MAPFISH_PRINT_ENABLED': True,
         'PRINT_NG_ENABLED': True,
         'GEONODE_SECURITY_ENABLED': True,
-        'GEOGIT_ENABLED': False,
+        'GEOGIG_ENABLED': False,
         'WMST_ENABLED': False,
         'BACKEND_WRITE_ENABLED': True,
         'WPS_ENABLED': True,
@@ -524,7 +528,7 @@ UPLOADER = {
     'BACKEND': 'geonode.rest',
     'OPTIONS': {
         'TIME_ENABLED': False,
-        'GEOGIT_ENABLED': False,
+        'GEOGIG_ENABLED': False,
     }
 }
 
@@ -782,6 +786,39 @@ CACHES = {
 
 LAYER_PREVIEW_LIBRARY = 'geoext'
 
+SERVICE_UPDATE_INTERVAL = 0
+
+# Queue non-blocking notifications.
+NOTIFICATION_QUEUE_ALL = False
+
+BROKER_URL = "django://"
+CELERY_ALWAYS_EAGER = True
+CELERY_IGNORE_RESULT = True
+CELERY_SEND_EVENTS = False
+CELERY_RESULT_BACKEND = None
+CELERY_TASK_RESULT_EXPIRES = 1
+CELERY_DISABLE_RATE_LIMITS = True
+CELERY_DEFAULT_QUEUE = "default"
+CELERY_DEFAULT_EXCHANGE = "default"
+CELERY_DEFAULT_EXCHANGE_TYPE = "direct"
+CELERY_DEFAULT_ROUTING_KEY = "default"
+CELERY_CREATE_MISSING_QUEUES = True
+CELERY_IMPORTS = (
+    'geonode.tasks.deletion',
+    'geonode.tasks.update',
+    'geonode.tasks.email'
+)
+
+
+CELERY_QUEUES = [
+    Queue('default', routing_key='default'),
+    Queue('cleanup', routing_key='cleanup'),
+    Queue('update', routing_key='update'),
+    Queue('email', routing_key='email'),
+]
+
+import djcelery
+djcelery.setup_loader()
 
 # Load more settings from a file called local_settings.py if it exists
 try:

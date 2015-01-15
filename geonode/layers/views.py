@@ -35,6 +35,7 @@ from django.template.defaultfilters import slugify
 from django.forms.models import inlineformset_factory
 from django.db.models import F
 
+from geonode.tasks.deletion import delete_layer
 from geonode.services.models import Service
 from geonode.layers.forms import LayerForm, LayerUploadForm, NewLayerUploadForm, LayerAttributeForm
 from geonode.base.forms import CategoryForm
@@ -51,6 +52,9 @@ from geonode.people.forms import ProfileForm, PocForm
 from geonode.security.views import _perms_info_json
 from geonode.documents.models import get_related_documents
 
+if 'geonode.geoserver' in settings.INSTALLED_APPS:
+
+    from geonode.geoserver.helpers import _render_thumbnail
 
 logger = logging.getLogger("geonode.layers.views")
 
@@ -335,8 +339,10 @@ def layer_metadata(request, layername, template='layers/layer_metadata.html'):
             the_layer.metadata_author = new_author
             the_layer.keywords.clear()
             the_layer.keywords.add(*new_keywords)
-            the_layer.category = new_category
-            the_layer.save()
+            Layer.objects.filter(id=the_layer.id).update(
+                category=new_category
+                )
+
             return HttpResponseRedirect(
                 reverse(
                     'layer_detail',
@@ -464,7 +470,27 @@ def layer_remove(request, layername, template='layers/layer_remove.html'):
             "layer": layer
         }))
     if (request.method == 'POST'):
-        layer.delete()
+        delete_layer.delay(object_id=layer.id)
         return HttpResponseRedirect(reverse("layer_browse"))
     else:
         return HttpResponse("Not allowed", status=403)
+
+
+def layer_thumbnail(request, layername):
+    if request.method == 'POST':
+        layer_obj = _resolve_layer(request, layername)
+        try:
+            image = _render_thumbnail(request.body)
+
+            if not image:
+                return
+            filename = "layer-%s-thumb.png" % layer_obj.id
+            layer_obj.save_thumbnail(filename, image)
+
+            return HttpResponse('Thumbnail saved')
+        except:
+            return HttpResponse(
+                content='error saving thumbnail',
+                status=500,
+                mimetype='text/plain'
+            )

@@ -136,9 +136,12 @@ setup(name='GeoNode',
         # haystack/elasticsearch, uncomment to use
         "django-haystack==2.1.0",
         "pyelasticsearch==0.6.1",
+        "celery==3.1.17",
+        "django-celery==3.1.16",
 
         # datetimepicker widget
         "django-bootstrap3-datetimepicker==2.2.3",
+        "flake8==2.2.5"
         ],
       zip_safe=False,
       )
