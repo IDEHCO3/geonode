@@ -99,8 +99,9 @@ urlpatterns = patterns('',
                        (r'^documents/', include('geonode.documents.urls')),
                        (r'^services/', include('geonode.services.urls')),
 
-                       (r'^knowledgeManagement/', include('knowledgeManagement.urls', namespace='km')),
+                       (r'^knowledgeManagement/', include('ideco.knowledgeManagement.urls', namespace='km')),
                        (r'^layerEditor/', include('layerEditor.urls', namespace='ledt')),
+                       (r'^communities/', include('ideco.community.urls', namespace='community')),
 
                        url(r'', include(api.urls)),
                        )

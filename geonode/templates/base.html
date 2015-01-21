@@ -59,6 +59,9 @@
             <li id="nav_groups">
               <a href="{% url "group_list" %}">{% trans "Groups" %}</a>
             </li>
+            <li id="nav_Communities">
+              <a href="{% url "community:list" %}">{% trans "Communities" %}</a>
+            </li>
             {% endblock %}
           </ul>
           <form class="navbar-form" id="search" action="{% url "search" %}" >

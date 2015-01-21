@@ -313,8 +313,9 @@ INSTALLED_APPS = (
     'polymorphic',
     'guardian',
 
-    # Ours plugins
-    'knowledgeManagement',
+    # IDECO
+    'ideco.knowledgeManagement',
+    'ideco.community',
     'layerEditor',
 
 ) + GEONODE_APPS
