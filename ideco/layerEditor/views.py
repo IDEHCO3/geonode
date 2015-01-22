@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import shapefile as sf
 from subprocess import call
 import os
+from geonode.layers.utils import upload
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -55,7 +56,9 @@ def create_layer(request):
     command_add_layer = "python manage.py importlayers -v2 "
     command_add_layer += "-u aluizio "
     command_add_layer += path_file + ".shp"
-    call(command_add_layer, shell=True)
+    #call(command_add_layer, shell=True)
+    user_name = "aluizio"
+    upload(path_file + ".shp", user=user_name, verbosity=2)
 
     command_remove_shape = "rm -f "+path_file+".*"
     call(command_remove_shape, shell=True)

@@ -280,7 +280,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
 
     # Third party apps
-    'maploom',
+    'ideco.maploom',
 
     # Utility
     'pagination',
@@ -316,7 +316,7 @@ INSTALLED_APPS = (
     # IDECO
     'ideco.knowledgeManagement',
     'ideco.community',
-    'layerEditor',
+    'ideco.layerEditor',
 
 ) + GEONODE_APPS
 

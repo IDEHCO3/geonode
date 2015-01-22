@@ -21,16 +21,14 @@ from django.conf.urls import include, patterns, url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
-from geonode.sitemap import LayerSitemap, MapSitemap
 from django.views.generic import TemplateView
+import autocomplete_light
 
-from maploom.geonode.urls import urlpatterns as maploom_urls
-
+from geonode.sitemap import LayerSitemap, MapSitemap
+from ideco.maploom.geonode.urls import urlpatterns as maploom_urls
 import geonode.proxy.urls
-
 from geonode.api.urls import api
 
-import autocomplete_light
 
 # Setup Django Admin
 autocomplete_light.autodiscover()
@@ -100,7 +98,7 @@ urlpatterns = patterns('',
                        (r'^services/', include('geonode.services.urls')),
 
                        (r'^knowledgeManagement/', include('ideco.knowledgeManagement.urls', namespace='km')),
-                       (r'^layerEditor/', include('layerEditor.urls', namespace='ledt')),
+                       (r'^layerEditor/', include('ideco.layerEditor.urls', namespace='ledt')),
                        (r'^communities/', include('ideco.community.urls', namespace='community')),
 
                        url(r'', include(api.urls)),
