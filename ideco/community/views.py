@@ -17,11 +17,11 @@ class CommunityDetail(generic.DetailView):
 class CommunityCreate(CreateView):
     model = Community
     def get_success_url(self):
-        return reverse('community:detail', kwargs={'pk': self.object.pk,})
+        return reverse('community:detail', kwargs={'pk': self.object.pk})
 
 class CommunityUpdate(UpdateView):
     model = Community
-    fields = ['name', 'description' ]
+    fields = ['name', 'description']
     template_name_suffix = '_update_form'
     success_url = '/communities'
 
