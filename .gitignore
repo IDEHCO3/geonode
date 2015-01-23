@@ -82,3 +82,9 @@ angular-leaflet-directive.min.js
 bootstrap.min.js
 jquery.min.js
 bootstrap.min.css
+
+# layer files
+*.dbf
+*.prj
+*.shp
+*.shx

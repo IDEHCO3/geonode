@@ -3,6 +3,9 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+
+from geonode.people.models import Profile
+
 import shapefile as sf
 from subprocess import call
 import os
@@ -53,12 +56,7 @@ def create_layer(request):
 
     user_shape.save(path_file)
 
-    command_add_layer = "python manage.py importlayers -v2 "
-    command_add_layer += "-u aluizio "
-    command_add_layer += path_file + ".shp"
-    #call(command_add_layer, shell=True)
-    user_name = "aluizio"
-    upload(path_file + ".shp", user=user_name, verbosity=2)
+    upload(path_file + ".shp", user=request.user, verbosity=2)
 
     command_remove_shape = "rm -f "+path_file+".*"
     call(command_remove_shape, shell=True)
@@ -66,4 +64,4 @@ def create_layer(request):
     arguments = "?layer=geonode:"+layer_name
     arguments = arguments.encode("latin_1")
 
-    return HttpResponseRedirect(reverse('maploom-map-new') + arguments )
+    return HttpResponseRedirect(reverse('new_map') + arguments )
