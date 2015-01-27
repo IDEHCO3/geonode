@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from geonode.people.models import Profile
 
 import shapefile as sf
+from ideco.layerEditor.models import LayerBuilder, ShapefileWrite
 from subprocess import call
 import os
 from geonode.layers.utils import upload
@@ -20,48 +21,43 @@ def new_layer(request):
 
 def create_layer(request):
 
-    marker_type = {'Point': sf.POINT, 'Line': sf.POLYLINE, 'Polygon': sf.POLYGON}
-    samples_elements = {'Point': [[[-43.2096, -22.9035]]],
-                        'Line': [[[-43.2096, -22.9035], [-43.1996, -22.8935]]],
-                        'Polygon': [[[-43.2096, -22.9035], [-43.1996, -22.8935], [-43.2096, -22.8935], [-43.2096, -22.9035]]]}
-
     attributes = request.POST
     layer_name = request.POST["layer_name"]
     layer_type = request.POST["layer_type"]
 
-    if( layer_name == "" ):
+    if layer_name == "":
         return HttpResponseRedirect(reverse('ledt:new_layer'))
 
-    if( attributes["attr_name1"] != "id" ):
+    if attributes["attr_name1"] != "id":
         return HttpResponseRedirect(reverse('ledt:new_layer'))
 
-    user_shape = sf.Writer(marker_type[layer_type])
+    attributes = []
 
-    for attribute in attributes:
-        if( attributes[attribute] == '' ):
-            return HttpResponseRedirect(reverse('ledt:new_layer'))
-        if( "attr_name" in attribute ):
-            f = attributes[attribute]
-            f = f.encode("latin_1")
-            user_shape.field(f)
+    for attribute in request.POST:
+        if "attr_name" in attribute:
+            position = int(attribute[9:])
+            name = request.POST[attribute]
+            name = name.encode("latin_1")
+            attributes[position-1]["name"] = name
 
-    user_shape.poly(parts=samples_elements[layer_type])
-    user_shape.record(id='0')
-    path_file = PROJECT_ROOT+'/temp_shapes/'+layer_name
+        if "attr_type" in attribute:
+            position = int(attribute[9:])
+            attributes[position-1]['type'] = ShapefileWrite.field_type_dict[request.POST[attribute]]
 
-    prj = open("%s.prj" % path_file, "w")
-    epsg = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]'
-    prj.write(epsg)
-    prj.close()
+        if "attr_size" in attribute:
+            position = int(attribute[9:])
+            attributes[position-1]['size'] = int(request.POST[attribute])
 
-    user_shape.save(path_file)
+        if "attr_decimal" in attribute:
+            position = int(attribute[12:])
+            attributes[position-1]['decimal'] = int(request.POST[attribute])
 
-    upload(path_file + ".shp", user=request.user, verbosity=2)
+    layer = LayerBuilder(layer_name)
 
-    command_remove_shape = "rm -f "+path_file+".*"
-    call(command_remove_shape, shell=True)
+    shape = layer.create_shape(layer_type, attributes)
+    layer.save_shape(shape_in_memory=shape, user=request.user)
 
     arguments = "?layer=geonode:"+layer_name
     arguments = arguments.encode("latin_1")
 
-    return HttpResponseRedirect(reverse('new_map') + arguments )
+    return HttpResponseRedirect(reverse('new_map') + arguments)
