@@ -1,0 +1,16 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+{% block body %}
+    <p><a href="{% url 'sdi_management:create'%}">{% trans 'Create a SDI' %}</a></p>
+
+    {% if instancesdico_list %}
+        <ul>
+        {% for instancesdico in instancesdico_list %}
+             <li>/li>
+
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> {% trans 'No SDIs are available' %}</p>
+    {% endif %}
+{% endblock %}

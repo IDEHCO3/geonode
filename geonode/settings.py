@@ -317,6 +317,8 @@ INSTALLED_APPS = (
     'ideco.knowledgeManagement',
     'ideco.community',
     'ideco.layerEditor',
+    'ideco.sdi_management',
+    'ideco.geoproject',
 
 ) + GEONODE_APPS
 

@@ -62,6 +62,12 @@
             <li id="nav_Communities">
               <a href="{% url "community:list" %}">{% trans "Communities" %}</a>
             </li>
+            <li id="nav_sdi_management">
+              <a href="{% url "sdi_management:list" %}">{% trans "SDIs" %}</a>
+            </li>
+            <li id="nav_geoproject">
+              <a href="{% url "geoproject:list" %}">{% trans "Geoprojects" %}</a>
+            </li>
             {% endblock %}
           </ul>
           <form class="navbar-form" id="search" action="{% url "search" %}" >

@@ -1,0 +1,16 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+{% block body %}
+    <p><a href="{% url 'geoproject:create'%}">{% trans 'Create a geoproject' %}</a></p>
+
+    {% if geoproject_list %}
+        <ul>
+        {% for geoproject in geoproject_list %}
+             <li>/li>
+
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p> {% trans 'No geoprojects are available' %}</p>
+    {% endif %}
+{% endblock %}
