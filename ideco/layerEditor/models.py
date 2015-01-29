@@ -45,18 +45,21 @@ class ShapefileWrite(shapefile.Writer):
 
 class LayerBuilder():
 
+    shp = ShapefileWrite()
+    path_file = ""
+
     def __init__(self, layer_name):
         self.path_file = PROJECT_ROOT+'/temp_shapes/'+layer_name
 
     def create_shape(self, type_geometry, array_of_field_shp):
 
-        shp = ShapefileWrite(type_geometry)
+        self.shp = ShapefileWrite(type_geometry)
 
         for field in array_of_field_shp:
 
-            shp.field(field['name'], field['type'], field['size'], field['decimal'])
+            self.shp.field(field['name'], field['type'], field['size'], field['decimal'])
 
-        return shp
+        return self.shp
 
     def __create_projection(self):
 
@@ -65,7 +68,10 @@ class LayerBuilder():
         prj.write(epsg)
         prj.close()
 
-    def save_shape(self, shape_in_memory, user):
+    def save_shape(self, shape_in_memory=None, user=None):
+
+        if shape_in_memory is None:
+            shape_in_memory = self.shp
 
         shape_in_memory.save(self.path_file)
         self.__create_projection()
