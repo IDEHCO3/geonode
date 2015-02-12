@@ -1,7 +1,16 @@
 (function(){
     var app = angular.module("layer_app",[]);
+    var data = {'layerName' : '',
+                'layerType' : '',
+                'attributes': [],
+                'csrfmiddlewaretoken': ''};
 
-    app.controller("TypeController",function(){
+    data.attributes.push({   'attributeName': 'id',
+                                'attributeType': 'L',
+                                'attributeSize': 10,
+                                'attributeDecimal': 0 });
+
+    app.controller("FormController", function(){
         this.attributeType = 'C';
 
         this.setAttributeType = function(type){
@@ -13,7 +22,7 @@
         };
 
         this.hasSize = function(){
-            if( this.attributeType === "Date"){
+            if( this.attributeType === "D"){
                 return false;
             }
             else{
@@ -22,7 +31,7 @@
         };
 
         this.hasDecimal = function(){
-            if( this.attributeType === "Number" ){
+            if( this.attributeType === "N" ){
                 return true;
             }
             else{
@@ -30,6 +39,72 @@
             }
         };
     });
+
+    app.layerController = function($http){
+        this.layerName = '';
+        this.layerType = '';
+        this.attributes = [{   'attributeName': 'id',
+                                'attributeType': 'L',
+                                'attributeSize': 10,
+                                'attributeDecimal': 0 }];
+
+        this.attributeName = '';
+        this.attributeType = 'C';
+        this.attributeSize = '';
+        this.attributeDecimal = '';
+
+        this.createAttribute = function(){
+            this.attributes.push({'attributeName': this.attributeName,
+                                    'attributeType':  this.attributeType,
+                                    'attributeSize': this.attributeSize,
+                                    'attributeDecimal': this.attributeDecimal });
+
+            this.attributeName = '';
+            this.attributeType = 'C';
+            this.attributeSize = '';
+            this.attributeDecimal = '';
+
+            data = {'layerName' : this.layerName,
+                    'layerType' : this.layerType,
+                    'attributes' : this.attributes};
+
+        };
+
+        this.createLayer = function(url, token){
+            data = {'layerName' : this.layerName,
+                    'layerType' : this.layerType,
+                    'attributes' : this.attributes,
+                    'csrfmiddlewaretoken': token};
+
+            var response = $http.post(url,data);
+
+            response.success(function(){
+
+            });
+
+            response.error(function(){
+
+            });
+        };
+
+        this.getAttributes = function(){
+            return data.attributes;
+        };
+
+    };
+
+
+    app.controller("LayerController",['$http', app.layerController]);
+
+    app.directive("attributesList", function(){
+        return {
+            restrict: 'E',
+            templateUrl: '/static/layerEditor/attributes-list.html',
+            controller: 'LayerController',
+            controllerAs: 'layer'
+        };
+    });
+
 })();
 
 
