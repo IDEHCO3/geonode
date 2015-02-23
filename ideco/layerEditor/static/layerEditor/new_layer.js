@@ -73,10 +73,17 @@
         this.createLayer = function(url, token){
             data = {'layerName' : this.layerName,
                     'layerType' : this.layerType,
-                    'attributes' : this.attributes,
-                    'csrfmiddlewaretoken': token};
+                    'attributes': this.attributes };
 
-            var response = $http.post(url,data);
+            data = angular.toJson(data);
+            data = "csrfmiddlewaretoken="+token+"; data="+data;
+
+            var response = $http({
+                method: 'POST',
+                url: url,
+                data: data,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
 
             response.success(function(){
 
