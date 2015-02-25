@@ -98,7 +98,7 @@ urlpatterns = patterns('',
                        (r'^services/', include('geonode.services.urls')),
 
                        (r'^knowledgeManagement/', include('ideco.knowledgeManagement.urls', namespace='km')),
-                       (r'^layerEditor/', include('ideco.layerEditor.urls', namespace='ledt')),
+                       (r'^layerEditor/', include('ideco.layerEditor.urls', namespace='layerEditor')),
                        (r'^communities/', include('ideco.community.urls', namespace='community')),
                        (r'^sdis/', include('ideco.sdi_management.urls', namespace='sdi_management')),
                        (r'^geoprojects/', include('ideco.geoproject.urls', namespace='geoproject')),

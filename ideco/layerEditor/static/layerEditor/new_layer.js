@@ -5,24 +5,31 @@
                 'attributes': [],
                 'csrfmiddlewaretoken': ''};
 
-    data.attributes.push({   'attributeName': 'id',
-                                'attributeType': 'L',
-                                'attributeSize': 10,
-                                'attributeDecimal': 0 });
+    app.layerController = function($scope,$http){
 
-    app.controller("FormController", function(){
-        this.attributeType = 'C';
+        $scope.layerName = 'myLayer';
+        $scope.layerType = 'Point';
+        $scope.attributes = [{  'id': 0,
+                                'attributeName': 'id',
+                                'attributeType': 'Long',
+                                'attributeSize': 10,
+                                'attributeDecimal': 0 }];
+
+        $scope.attributeName = 'name';
+        $scope.attributeType = 'Character';
+        $scope.attributeSize = 0;
+        $scope.attributeDecimal = 0;
 
         this.setAttributeType = function(type){
-            this.attributeType = type;
+            $scope.attributeType = type;
         };
 
         this.isSet = function(type){
-            return this.attributeType === type;
+            return $scope.attributeType === type;
         };
 
         this.hasSize = function(){
-            if( this.attributeType === "D"){
+            if( $scope.attributeType === 'Date'){
                 return false;
             }
             else{
@@ -31,77 +38,79 @@
         };
 
         this.hasDecimal = function(){
-            if( this.attributeType === "N" ){
+            if( $scope.attributeType === 'Number' ){
                 return true;
             }
             else{
                 return false;
             }
         };
-    });
-
-    app.layerController = function($http){
-        this.layerName = '';
-        this.layerType = '';
-        this.attributes = [{   'attributeName': 'id',
-                                'attributeType': 'L',
-                                'attributeSize': 10,
-                                'attributeDecimal': 0 }];
-
-        this.attributeName = '';
-        this.attributeType = 'C';
-        this.attributeSize = '';
-        this.attributeDecimal = '';
 
         this.createAttribute = function(){
-            this.attributes.push({'attributeName': this.attributeName,
-                                    'attributeType':  this.attributeType,
-                                    'attributeSize': this.attributeSize,
-                                    'attributeDecimal': this.attributeDecimal });
 
-            this.attributeName = '';
-            this.attributeType = 'C';
-            this.attributeSize = '';
-            this.attributeDecimal = '';
+            if( $scope.attributeName === '' )
+                return;
 
-            data = {'layerName' : this.layerName,
-                    'layerType' : this.layerType,
-                    'attributes' : this.attributes};
+            if( this.hasSize() && $scope.attributeSize === 0 )
+                return;
+
+            if( this.hasDecimal() && $scope.attributeDecimal === 0 )
+                return;
+
+            $scope.attributes.push({'id': $scope.attributes.length,
+                                    'attributeName': $scope.attributeName,
+                                    'attributeType':  $scope.attributeType,
+                                    'attributeSize': $scope.attributeSize,
+                                    'attributeDecimal': $scope.attributeDecimal });
+
+            $scope.attributeName = 'name';
+            $scope.attributeType = 'Character';
+            $scope.attributeSize = 0;
+            $scope.attributeDecimal = 0;
+
+            data = {'layerName' : $scope.layerName,
+                    'layerType' : $scope.layerType,
+                    'attributes' : $scope.attributes};
 
         };
 
+        this.removeAttribute = function(index){
+
+            $scope.attributes.splice(index,1);
+
+            for(var i=0; i < $scope.attributes.length; i++){
+                $scope.attributes[i]['id'] = i;
+            }
+        };
+
+        this.editAttribute = function(index){
+            $scope.attributeName = $scope.attributes[index]['attributeName'];
+            $scope.attributeType = $scope.attributes[index]['attributeType'];
+            $scope.attributeSize = $scope.attributes[index]['attributeSize'];
+            $scope.attributeDecimal = $scope.attributes[index]['attributeDecimal'];
+            this.removeAttribute(index);
+        };
+
         this.createLayer = function(url, token){
-            data = {'layerName' : this.layerName,
-                    'layerType' : this.layerType,
-                    'attributes': this.attributes };
+            data = {'layerName' : $scope.layerName,
+                    'layerType' : $scope.layerType,
+                    'attributes': $scope.attributes };
 
             data = angular.toJson(data);
-            data = "csrfmiddlewaretoken="+token+"; data="+data;
+            data = "csrfmiddlewaretoken="+token+"& layer_data1234="+data;
 
-            var response = $http({
+            $http({
                 method: 'POST',
                 url: url,
                 data: data,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
 
-            response.success(function(){
-
-            });
-
-            response.error(function(){
-
-            });
-        };
-
-        this.getAttributes = function(){
-            return data.attributes;
         };
 
     };
 
-
-    app.controller("LayerController",['$http', app.layerController]);
+    app.controller("LayerController",['$scope','$http', app.layerController]);
 
     app.directive("attributesList", function(){
         return {
@@ -112,51 +121,13 @@
         };
     });
 
+    app.directive("layerInput", function(){
+        return {
+            restrict: 'E',
+            templateUrl: '/static/layerEditor/layer-input.html',
+            controller: 'LayerController',
+            controllerAs: 'layer'
+        };
+    });
+
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//var num_atr = 1;
-//$(document).ready(function(){
-//    $("#add-line").click(function(){
-//        var $atr_list = $("#attributes-list");
-//        var $input = $("#attr_name");
-//        var $attr_n = $("#attr_l");
-
-//        num_atr++;
-//        $attr_n.attr("id","attr_l"+num_atr.toString());
-//        $input.attr("id","attr_name"+num_atr.toString());
-//        $input.attr("name","attr_name"+num_atr.toString());
-
-//        var $line = $("#attribute_line");
-//        $atr_list.html( $atr_list.html() + $line.html() );
-
-//        $input.attr("id","attr_name");
-//        $input.removeAttr("name");
-//        $attr_n.attr("id","attr_l");
-//    });
-
-//    $("#remove-line").click(function(){
-//        if( num_atr > 1){
-//            $("#attr_l"+num_atr.toString()).remove();
-//            num_atr--;
-//        }
-//    });
-//});

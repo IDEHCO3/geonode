@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from geonode.people.models import Profile
 
+import json
 import shapefile as sf
 from ideco.layerEditor.models import LayerBuilder, ShapefileWrite
 from subprocess import call
@@ -21,43 +22,49 @@ def new_layer(request):
 
 def create_layer(request):
 
-    attributes = request.POST
     layer_name = request.POST["layer_name"]
     layer_type = request.POST["layer_type"]
 
-    if layer_name == "":
-        return HttpResponseRedirect(reverse('ledt:new_layer'))
-
-    if attributes["attr_name1"] != "id":
-        return HttpResponseRedirect(reverse('ledt:new_layer'))
-
-    attributes = []
-
-    for attribute in request.POST:
-        if "attr_name" in attribute:
-            position = int(attribute[9:])
-            name = request.POST[attribute]
-            name = name.encode("latin_1")
-            attributes[position-1]["name"] = name
-
-        if "attr_type" in attribute:
-            position = int(attribute[9:])
-            attributes[position-1]['type'] = ShapefileWrite.field_type_dict[request.POST[attribute]]
-
-        if "attr_size" in attribute:
-            position = int(attribute[9:])
-            attributes[position-1]['size'] = int(request.POST[attribute])
-
-        if "attr_decimal" in attribute:
-            position = int(attribute[12:])
-            attributes[position-1]['decimal'] = int(request.POST[attribute])
+    attributes = getAttributesFromRequest(request)
 
     layer = LayerBuilder(layer_name)
 
     shape = layer.create_shape(layer_type, attributes)
     layer.save_shape(shape_in_memory=shape, user=request.user)
 
+    layer_name = layer_name.lower()
     arguments = "?layer=geonode:"+layer_name
     arguments = arguments.encode("latin_1")
 
     return HttpResponseRedirect(reverse('new_map') + arguments)
+
+def getAttributesFromRequest(request):
+    number_of_attributes = int(request.POST["number_attributes"])
+
+    attributes = []
+
+    for attr in range(0, number_of_attributes):
+        attributes.append({})
+
+    for attribute in request.POST:
+        if request.POST[attribute] == '':
+            continue
+        if "attr_name" in attribute:
+            position = int(attribute[9:])
+            name = request.POST[attribute]
+            name = name.encode("latin_1")
+            attributes[position]["name"] = name
+
+        if "attr_type" in attribute:
+            position = int(attribute[9:])
+            attributes[position]['type'] = ShapefileWrite.field_type_dict[request.POST[attribute]]
+
+        if "attr_size" in attribute:
+            position = int(attribute[9:])
+            attributes[position]['size'] = int(request.POST[attribute])
+
+        if "attr_decimal" in attribute:
+            position = int(attribute[12:])
+            attributes[position]['decimal'] = int(request.POST[attribute])
+
+    return attributes

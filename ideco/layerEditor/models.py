@@ -56,8 +56,13 @@ class LayerBuilder():
         self.shp = ShapefileWrite(type_geometry)
 
         for field in array_of_field_shp:
-
-            self.shp.field(field['name'], field['type'], field['size'], field['decimal'])
+            size = 0
+            decimal = 0
+            if field.has_key('size'):
+                size = field['size']
+            if field.has_key('decimal'):
+                decimal = field['decimal']
+            self.shp.field(field['name'], field['type'], size, decimal)
 
         return self.shp
 
