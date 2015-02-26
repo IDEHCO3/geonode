@@ -15,7 +15,7 @@ class ShapefileWrite(shapefile.Writer):
 
     marker_type = {'Point': shapefile.POINT, 'Line': shapefile.POLYLINE, 'Polygon': shapefile.POLYGON}
 
-    field_type_dict = {'Character': 'C', 'Number': 'N', 'Date': 'D', 'Long': 'L'}
+    field_type_dict = {'Character': 'C', 'Number': 'N', 'Date': 'D', 'Logical': 'L'}
 
     def __init__(self, shapeType='Point', a_bbox_temp=[]):
 
@@ -56,10 +56,12 @@ class LayerBuilder():
         self.shp = ShapefileWrite(type_geometry)
 
         for field in array_of_field_shp:
-            size = 0
+            size = field['size']
             decimal = 0
-            if field.has_key('size'):
-                size = field['size']
+            if field['type'] == 'D':
+                size = 8
+            if field['type'] == 'L':
+                size = 1
             if field.has_key('decimal'):
                 decimal = field['decimal']
             self.shp.field(field['name'], field['type'], size, decimal)

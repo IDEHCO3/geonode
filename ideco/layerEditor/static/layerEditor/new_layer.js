@@ -11,13 +11,13 @@
         $scope.layerType = 'Point';
         $scope.attributes = [{  'id': 0,
                                 'attributeName': 'id',
-                                'attributeType': 'Long',
+                                'attributeType': 'Number',
                                 'attributeSize': 10,
                                 'attributeDecimal': 0 }];
 
-        $scope.attributeName = 'name';
+        $scope.attributeName = 'attributeName';
         $scope.attributeType = 'Character';
-        $scope.attributeSize = 0;
+        $scope.attributeSize = 50;
         $scope.attributeDecimal = 0;
 
         this.setAttributeType = function(type){
@@ -29,7 +29,7 @@
         };
 
         this.hasSize = function(){
-            if( $scope.attributeType === 'Date'){
+            if( $scope.attributeType === 'Date' || $scope.attributeType === 'Logical'){
                 return false;
             }
             else{
@@ -54,7 +54,23 @@
             if( this.hasSize() && $scope.attributeSize === 0 )
                 return;
 
-            if( this.hasDecimal() && $scope.attributeDecimal === 0 )
+            if( $scope.attributeType === 'Date'){
+                $scope.attributeSize = 8;
+            }
+            else if( $scope.attributeType === 'Logical' ){
+                $scope.attributeSize = 1;
+            }
+
+            if( typeof $scope.attributeSize != 'number' )
+                return;
+
+            if( typeof $scope.attributeDecimal != 'number' )
+                return;
+
+            if( $scope.attributeSize > 255 || $scope.attributeSize <= 0 )
+                return;
+
+            if( $scope.attributeDecimal > 255 || $scope.attributeDecimal < 0 )
                 return;
 
             $scope.attributes.push({'id': $scope.attributes.length,
@@ -63,9 +79,9 @@
                                     'attributeSize': $scope.attributeSize,
                                     'attributeDecimal': $scope.attributeDecimal });
 
-            $scope.attributeName = 'name';
+            $scope.attributeName = 'attributeName';
             $scope.attributeType = 'Character';
-            $scope.attributeSize = 0;
+            $scope.attributeSize = 50;
             $scope.attributeDecimal = 0;
 
             data = {'layerName' : $scope.layerName,
@@ -89,23 +105,6 @@
             $scope.attributeSize = $scope.attributes[index]['attributeSize'];
             $scope.attributeDecimal = $scope.attributes[index]['attributeDecimal'];
             this.removeAttribute(index);
-        };
-
-        this.createLayer = function(url, token){
-            data = {'layerName' : $scope.layerName,
-                    'layerType' : $scope.layerType,
-                    'attributes': $scope.attributes };
-
-            data = angular.toJson(data);
-            data = "csrfmiddlewaretoken="+token+"& layer_data1234="+data;
-
-            $http({
-                method: 'POST',
-                url: url,
-                data: data,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            });
-
         };
 
     };

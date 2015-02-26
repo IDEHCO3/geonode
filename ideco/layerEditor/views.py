@@ -25,6 +25,9 @@ def create_layer(request):
     layer_name = request.POST["layer_name"]
     layer_type = request.POST["layer_type"]
 
+    if layer_name == "":
+        return HttpResponseRedirect(reverse('layerEditor:new_layer'))
+
     attributes = getAttributesFromRequest(request)
 
     layer = LayerBuilder(layer_name)
@@ -32,8 +35,7 @@ def create_layer(request):
     shape = layer.create_shape(layer_type, attributes)
     layer.save_shape(shape_in_memory=shape, user=request.user)
 
-    layer_name = layer_name.lower()
-    arguments = "?layer=geonode:"+layer_name
+    arguments = "?layer=geonode:"+layer_name.lower()
     arguments = arguments.encode("latin_1")
 
     return HttpResponseRedirect(reverse('new_map') + arguments)

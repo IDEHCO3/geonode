@@ -37,17 +37,17 @@
                     <select class="form-control" id="attr_type" ng-model="attributeType">
                         <option value="Character" >{% trans 'Character' %}</option>
                         <option value="Number" >{% trans 'Number' %}</option>
-                        <option value="Long" >{% trans 'Long' %}</option>
+                        <option value="Logical" >{% trans 'Logical' %}</option>
                         <option value="Date" >{% trans 'Date' %}</option>
                     </select>
                 </div>
                 <div class="col-md-3" ng-show="layerCtrl.hasSize()">
                     <label>{% trans 'size of attribute' %}</label>
-                    <input id="attr_size" type="number" ng-model="attributeSize" class="form-control">
+                    <input id="attr_size" type="number" ng-model="attributeSize" min="0" max="255" class="form-control">
                 </div>
                 <div class="col-md-3" ng-show="layerCtrl.hasDecimal()">
                     <label>{% trans 'precision of decimal number' %}</label>
-                    <input id="attr_decimal" type="number" ng-model="attributeDecimal" class="form-control">
+                    <input id="attr_decimal" type="number" ng-model="attributeDecimal" min="0" max="255" class="form-control">
                 </div>
 
             </div>
