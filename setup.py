@@ -92,6 +92,7 @@ setup(name='GeoNode',
         "Paver==1.2.1", # python-paver
         "nose <=1.0, <=1.3.1", # python-nose
         "django-nose==1.2", # python-django-nose
+        "awesome-slugify==1.6.2",
 
         # Django Apps
         "django-pagination >=1.0.5, <=1.0.7", # python-django-pagination
@@ -117,15 +118,15 @@ setup(name='GeoNode',
 
         # GeoNode org maintained apps.
         "django-geoexplorer==4.0.4",
-        "geonode-user-messages==0.1.1",
-        "geonode-avatar==2.1.3",
+        "geonode-user-messages==0.1.2",
+        "geonode-avatar==2.1.4",
         "geonode-announcements==1.0.5",
         "geonode-agon-ratings==0.3.1",
-        "geonode-user-accounts==1.0.9",
+        "geonode-user-accounts==1.0.10",
         "geonode-arcrest==10.2",
         "geonode-notification==1.1.1",
         "geonode-dialogos==0.4",
-        "gsconfig==0.6.11",
+        "gsconfig==0.6.13",
         "gsimporter==0.1",
         "gisdata==0.5.4",
 
@@ -141,7 +142,8 @@ setup(name='GeoNode',
 
         # datetimepicker widget
         "django-bootstrap3-datetimepicker==2.2.3",
-        "flake8==2.2.5"
+        "flake8==2.3.0",
+        "pep8==1.6.2"
         ],
       zip_safe=False,
       )
