@@ -313,6 +313,8 @@ INSTALLED_APPS = (
     'polymorphic',
     'guardian',
 
+    #REST
+    'rest_framework',
     # IDECO
     'ideco.knowledgeManagement',
     'ideco.community',

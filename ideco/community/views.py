@@ -2,10 +2,16 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
-
 from ideco.community.models import Community
+
+
+#rest framework
+from rest_framework.views import APIView
+from rest_framework import generics
+
+#REST api
+from ideco.community.serializers import CommunitySerializer
 
 #List communities
 class CommunityList(generic.ListView):
@@ -31,4 +37,14 @@ class CommunityDelete(DeleteView):
     success_url = '/communities'
 
 
+class CommunityListRest(generics.ListCreateAPIView):
+    """
+    List all Communities, or create a new community.
+    """
+    queryset = Community.objects.all()
 
+    serializer_class = CommunitySerializer
+
+#class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
+    #queryset = Community.objects.all()
+    #serializer_class = CommunitySerializer
