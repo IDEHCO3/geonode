@@ -16,19 +16,24 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-
+from ideco.maploom.geonode.urls import urlpatterns as maploom_urls
 from django.conf.urls import include, patterns, url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
+from geonode.sitemap import LayerSitemap, MapSitemap
 from django.views.generic import TemplateView
+
 import autocomplete_light
 
-from geonode.sitemap import LayerSitemap, MapSitemap
-from ideco.maploom.geonode.urls import urlpatterns as maploom_urls
+from django.contrib import admin
+
+
 import geonode.proxy.urls
+
 from geonode.api.urls import api
 
+import autocomplete_light
 
 # Setup Django Admin
 autocomplete_light.autodiscover()
