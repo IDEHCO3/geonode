@@ -322,6 +322,7 @@ INSTALLED_APPS = (
     'idehco3.sdi_management',
     'idehco3.geoproject',
     'idehco3.stream',
+    'idehco3.tweeterStream',
 
 ) + GEONODE_APPS
 

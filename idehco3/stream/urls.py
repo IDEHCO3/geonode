@@ -5,4 +5,4 @@ except ImportError:  # django < 1.4
 
 # place app url patterns here
 urlpatterns = patterns('idehco3.stream.views',
-                       url(r'^index$', 'index', name='index'))
+                       url(r'^$', 'index', name='index'))
