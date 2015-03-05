@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-from ideco.maploom.geonode.urls import urlpatterns as maploom_urls
+from idehco3.maploom.geonode.urls import urlpatterns as maploom_urls
 from django.conf.urls import include, patterns, url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -101,11 +101,12 @@ urlpatterns = patterns('',
                        (r'^documents/', include('geonode.documents.urls')),
                        (r'^services/', include('geonode.services.urls')),
 
-                       (r'^knowledgeManagement/', include('ideco.knowledgeManagement.urls', namespace='km')),
-                       (r'^layerEditor/', include('ideco.layerEditor.urls', namespace='layerEditor')),
-                       (r'^communities/', include('ideco.community.urls', namespace='community')),
-                       (r'^sdis/', include('ideco.sdi_management.urls', namespace='sdi_management')),
-                       (r'^geoprojects/', include('ideco.geoproject.urls', namespace='geoproject')),
+                       (r'^knowledgeManagement/', include('idehco3.knowledgeManagement.urls', namespace='km')),
+                       (r'^layerEditor/', include('idehco3.layerEditor.urls', namespace='layerEditor')),
+                       (r'^communities/', include('idehco3.community.urls', namespace='community')),
+                       (r'^sdis/', include('idehco3.sdi_management.urls', namespace='sdi_management')),
+                       (r'^geoprojects/', include('idehco3.geoproject.urls', namespace='geoproject')),
+                       (r'^stream/', include('idehco3.stream.urls', namespace='stream')),
 
                        url(r'', include(api.urls)),
                        )
