@@ -85,7 +85,7 @@
             $scope.attributeDecimal = 0;
         };
 
-        this.removeAttribute = function(index){
+        $scope.removeAttribute = function(index){
 
             $scope.attributes.splice(index,1);
 
@@ -94,7 +94,7 @@
             }
         };
 
-        this.editAttribute = function(index){
+        $scope.editAttribute = function(index){
             $scope.attributeName = $scope.attributes[index]['attributeName'];
             $scope.attributeType = $scope.attributes[index]['attributeType'];
             $scope.attributeSize = $scope.attributes[index]['attributeSize'];
@@ -109,9 +109,7 @@
     app.directive("attributesList", function(){
         return {
             restrict: 'E',
-            templateUrl: '/static/layerEditor/attributes-list.html',
-            controller: 'LayerController',
-            controllerAs: 'layer'
+            templateUrl: '/static/layerEditor/attributes-list.html'
         };
     });
 
