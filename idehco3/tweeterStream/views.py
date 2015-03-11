@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from idehco3.tweeterStream.models import *
+from idehco3.tweeterStream.forms import *
+from django.views.generic.edit import FormView
 
 
 class TweeterStreamList(generic.ListView):

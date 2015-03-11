@@ -1,9 +1,88 @@
 {% extends 'site_base.html' %}
+{% load bootstrap_tags %}
 {% load i18n %}
+{% load staticfiles %}
 {% block body %}
-    <form action="{%  url 'tweeterStream:create' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="{% trans 'Create' %}" />
-    </form>
+    <link rel="stylesheet" type="text/css" href="{% static 'tweeterStream/ol.css' %}">
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div ng-app="map_form">
+        <form action="" method="post" ng-controller="MapFormController as mapCt">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.userGeonode.errors }}
+                <input type="hidden" id="{{ form.userGeonode.id_for_label }}" name="{{ form.userGeonode.name }}" value="{{ user.id }}"/>
+            </div>
+            <div class="fieldWrapper">
+                {{ form.status.errors }}
+                <input type="hidden" id="{{ form.status.id_for_label }}" name="{{ form.status.name }}" value="Processing"/>
+            </div>
+            <div class="fieldWrapper">
+                {{ form.creation_date.errors }}
+                <input type="hidden" id="{{ form.creation_date.id_for_label }}" name="{{ form.creation_date.name }}" value="{% now 'Y-m-d H:i:s' %}" />
+            </div>
+            <div class="fieldWrapper">
+                {{ form.zoom.errors }}
+                <input type="hidden" id="{{ form.zoom.id_for_label }}" ng-init="setZoomId('{{ form.zoom.id_for_label }}')"  name="{{ form.zoom.name }}" />
+            </div>
+            <div class="fieldWrapper">
+                {{ form.center_logitude.errors }}
+                <input type="hidden" id="{{ form.center_longitude.id_for_label }}" ng-init="setCenterLogId('{{ form.center_longitude.id_for_label }}')" name="{{ form.center_longitude.name }}" />
+            </div>
+            <div class="fieldWrapper">
+                {{ form.center_latitude.errors }}
+                <input type="hidden" id="{{ form.center_latitude.id_for_label }}" ng-init="setCenterLatId('{{ form.center_latitude.id_for_label }}')" name="{{ form.center_latitude.name }}" />
+            </div>
+            <div class="fieldWrapper">
+                <p>
+                {{ form.name.errors }}
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                </p>
+            </div>
+            <div class="fieldWrapper">
+                <p>
+                {{ form.description.errors }}
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                </p>
+            </div>
+            <div class="fieldWrapper">
+                <p>
+                {{ form.init_date.errors }}
+                {{ form.init_date.label_tag }}
+                {{ form.init_date }}
+                </p>
+            </div>
+            <div class="fieldWrapper">
+                <p>
+                {{ form.end_date.errors }}
+                {{ form.end_date.label_tag }}
+                {{ form.end_date }}
+                </p>
+            </div>
+            <style>
+                .map{
+                    height: 100%;
+                    width: 100%;
+                }
+            </style>
+            <div id="map" class="map"></div>
+            <input type="submit" value="{% trans 'Create' %}" />
+        </form>
+    </div>
+    <script type="text/javascript" src="{% static 'tweeterStream/angular.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'tweeterStream/ol.js' %}"></script>
+    <script type="text/javascript" src="{% static 'tweeterStream/form_ol_control.js' %}"></script>
 {% endblock %}

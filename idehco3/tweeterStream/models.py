@@ -10,8 +10,8 @@ class TweeterStream(models.Model):
     status = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
 
-    center_x = models.FloatField()
-    center_y = models.FloatField()
+    center_longitude = models.FloatField()
+    center_latitude = models.FloatField()
     zoom = models.IntegerField()
 
     creation_date = models.DateTimeField()
