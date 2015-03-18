@@ -1,0 +1,28 @@
+{% extends 'site_base.html' %}
+{% load i18n %}
+{% block body %}
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <p><a href="{% url 'tweeterStream:create' %}">{% trans 'Create a Tweeter Stream' %}</a></p>
+    {% if tweeterstream_list %}
+        <ul>
+        {% for tweet in tweeterstream_list %}
+            <li>
+                <a href="{% url 'tweeterStream:detail' tweet.id %}">{{ tweet.name }}</a>
+                <a href="{% url 'tweeterStream:update' tweet.id %}">{% trans 'Update' %}</a>
+                <a href="{% url 'tweeterStream:delete' tweet.id %}">{% trans 'Delete' %}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

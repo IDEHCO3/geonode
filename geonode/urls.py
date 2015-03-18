@@ -16,19 +16,24 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-
+from idehco3.maploom.geonode.urls import urlpatterns as maploom_urls
 from django.conf.urls import include, patterns, url
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
+from geonode.sitemap import LayerSitemap, MapSitemap
 from django.views.generic import TemplateView
+
 import autocomplete_light
 
-from geonode.sitemap import LayerSitemap, MapSitemap
-from ideco.maploom.geonode.urls import urlpatterns as maploom_urls
+from django.contrib import admin
+
+
 import geonode.proxy.urls
+
 from geonode.api.urls import api
 
+import autocomplete_light
 
 # Setup Django Admin
 autocomplete_light.autodiscover()
@@ -73,7 +78,6 @@ urlpatterns = patterns('',
                        (r'^ratings/', include('agon_ratings.urls')),
                        (r'^activity/', include('actstream.urls')),
                        (r'^announcements/', include('announcements.urls')),
-                       (r'^notifications/', include('notification.urls')),
                        (r'^messages/', include('user_messages.urls')),
                        (r'^social/', include('geonode.social.urls')),
                        (r'^security/', include('geonode.security.urls')),
@@ -97,11 +101,13 @@ urlpatterns = patterns('',
                        (r'^documents/', include('geonode.documents.urls')),
                        (r'^services/', include('geonode.services.urls')),
 
-                       (r'^knowledgeManagement/', include('ideco.knowledgeManagement.urls', namespace='km')),
-                       (r'^layerEditor/', include('ideco.layerEditor.urls', namespace='ledt')),
-                       (r'^communities/', include('ideco.community.urls', namespace='community')),
-                       (r'^sdis/', include('ideco.sdi_management.urls', namespace='sdi_management')),
-                       (r'^geoprojects/', include('ideco.geoproject.urls', namespace='geoproject')),
+                       (r'^knowledgeManagement/', include('idehco3.knowledgeManagement.urls', namespace='km')),
+                       (r'^layerEditor/', include('idehco3.layerEditor.urls', namespace='layerEditor')),
+                       (r'^communities/', include('idehco3.community.urls', namespace='community')),
+                       (r'^sdis/', include('idehco3.sdi_management.urls', namespace='sdi_management')),
+                       (r'^geoprojects/', include('idehco3.geoproject.urls', namespace='geoproject')),
+                       (r'^stream/', include('idehco3.stream.urls', namespace='stream')),
+                       (r'^tweeterStream/', include('idehco3.tweeterStream.urls', namespace='tweeterStream')),
 
                        url(r'', include(api.urls)),
                        )
@@ -117,6 +123,11 @@ if 'geonode.geoserver' in settings.INSTALLED_APPS:
                             # Upload views
                             (r'^upload/', include('geonode.upload.urls')),
                             (r'^gs/', include('geonode.geoserver.urls')),
+                            )
+
+if 'notification' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+                            (r'^notifications/', include('notification.urls')),
                             )
 
 # Set up proxy

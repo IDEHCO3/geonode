@@ -1,0 +1,2 @@
+# Usado em geonode/geonode/utils.py - Deveria vir instalado-
+pip install awesome-slugify
