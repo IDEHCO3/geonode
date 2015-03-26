@@ -4,12 +4,16 @@
     <h1>{{ community.name }}</h1>
 
     <p>{{ community.description }}</p>
-    <p> {% trans 'Creator:' %}{{ community.manager }}</p>
+    <p> {% trans 'Creator: ' %}{{ community.owner }}</p>
 
-    <p> {% trans 'Members:' %}</p>
+    <p> {% trans 'Members: ' %}</p>
     <ul>
             {% for user in community.users %}
                  <li>{{ user }}</li>
             {% endfor %}
     </ul>
+     <ul>   {% if community.not_need_invitation %}
+                <a href="{% url 'community:join_us' community.id %}"> {% trans 'Join-us ' %}</a>
+            {% endif %}
+     </ul>
 {% endblock %}

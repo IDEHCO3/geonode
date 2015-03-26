@@ -108,6 +108,7 @@ urlpatterns = patterns('',
                        (r'^geoprojects/', include('idehco3.geoproject.urls', namespace='geoproject')),
                        (r'^stream/', include('idehco3.stream.urls', namespace='stream')),
                        (r'^tweeterStream/', include('idehco3.tweeterStream.urls', namespace='tweeterStream')),
+                       (r'^dashboard/', include('idehco3.dashboard.urls', namespace='dashboard')),
 
                        url(r'', include(api.urls)),
                        )

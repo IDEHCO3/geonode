@@ -324,6 +324,7 @@ INSTALLED_APPS = (
     'idehco3.geoproject',
     'idehco3.stream',
     'idehco3.tweeterStream',
+    'idehco3.dashboard',
 
 ) + GEONODE_APPS
 

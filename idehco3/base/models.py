@@ -18,7 +18,14 @@ class Membership(models.Model):
 
     is_banned = models.BooleanField(default=False)
 
-    invite_reason = models.CharField(max_length=100, null=True, default='Joined us')
+    can_edit = models.BooleanField(default=True)
+
+    can_invite = models.BooleanField(default=True)
+
+    invite_reason = models.CharField(max_length=300, null=True, default='Joined us')
+
+    member = models.ForeignKey(geonode.settings.AUTH_USER_MODEL, db_column='member_id')
+
 
     def is_included(self, a_person, an_entity):
 
@@ -34,32 +41,30 @@ class Membership(models.Model):
 
         raise NotImplementedError("Please Implement this method")
 
+    def is_owner(self):
 
-class Invitation(models.Model):
+        return self.owner is not None
 
-    requested_date = models.DateTimeField(default=datetime.datetime.now())
 
-    expired_date = models.DateTimeField()
+class Action(models.Model):
 
-    invite_reason = models.CharField(max_length=100, null=True, default='Joined us')
-
-    accepted = models.BooleanField(null=True)
-
-    user_from_ideh_co3 = models.OneToOneField(geonode.settings.AUTH_USER_MODEL, null=True)
-
-    inviter = models.OneToOneField(geonode.settings.AUTH_USER_MODEL, null=False)
-
-    opened = models.BooleanField(null=True, default=False)
-
-class Action(models):
-
-    reiceiver_serialized = models.CharField(null=False)
+    receiver_serialized = models.CharField(null=False, max_length=10000)
 
     message_name = models.CharField(max_length=200, null=False)
 
-    parameter_serialized = models.BigIntegerField(null= False)
+    parameter_serialized = models.CharField(null= False, max_length=10000)
 
-    executed = models.BooleanField(null=True)
+    executed = models.NullBooleanField(null=True)
+
+
+    def receiver_message_parameter(self,receiver, message, parameter):
+
+        self.receiver_serialized = self.serialize(receiver)
+
+        self.message_name = message
+
+        self.parameter_serialized = self.serialize(parameter)
+
 
     def serialize(self, an_object):
 
@@ -67,17 +72,68 @@ class Action(models):
 
         p = pickle.Pickler(src)
 
-        return p.dump(an_object)
+        p.dump(an_object)
+
+        dataStream = src.getvalue()
+
+        return dataStream
+
 
     def deserialize(self, serialized_object):
 
-        datastream = src.getvalue()
-
-        dst = StringIO(datastream)
+        dst = StringIO(serialized_object)
 
         up = pickle.Unpickler(dst)
 
         return up.load()
+
+
+    def execute(self):
+
+        self.executed = True
+
+        receiver_object = self.deserialize(self.receiver_serialized)
+
+
+        parameter_object = self.deserialize(self.parameter_serialized)
+
+
+        if self.parameter_serialized is None:
+
+            return getattr(receiver_object, self.message_name)()
+
+        arr = []
+
+        arr.append(parameter_object)
+
+
+        return getattr(receiver_object, self.message_name)(*arr)
+
+
+class Invitation(models.Model):
+
+    requested_date = models.DateTimeField(default=datetime.datetime.now())
+
+    expired_date = models.DateTimeField(null=True)
+
+    invite_reason = models.CharField(max_length=100, null=True, default='Joined us')
+
+    accepted = models.NullBooleanField(null=True)
+
+    invited = models.ForeignKey(geonode.settings.AUTH_USER_MODEL, null=True, related_name= 'invitations')
+
+    inviter = models.OneToOneField(geonode.settings.AUTH_USER_MODEL, null=False)
+
+    opened = models.NullBooleanField(null=True, default=False)
+
+    action = models.OneToOneField(Action, null=True)
+
+    def accept(self):
+
+        return self.action.execute()
+
+
+
 
 
 

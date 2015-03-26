@@ -311,7 +311,7 @@ def delete_from_postgis(resource_name):
         "'")
     try:
         cur = conn.cursor()
-        cur.execute("SELECT DropGeometryTable ('%s')" % resource_name)
+        cur.execute
         conn.commit()
     except Exception as e:
         logger.error(

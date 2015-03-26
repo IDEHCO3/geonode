@@ -22,6 +22,9 @@ class CommunityList(generic.ListView):
 class CommunityDetail(generic.DetailView):
     model = Community
 
+class CommunityJoinUs(generic.DetailView):
+    model = Community
+
 class CommunityCreate(FormView):
 
     #model = Community

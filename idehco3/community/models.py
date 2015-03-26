@@ -3,6 +3,9 @@ import datetime
 # Create your models here.
 #from geonode.people.models import Profile
 import geonode
+import idehco3
+from idehco3.base.models import Invitation, Action, Membership
+
 
 class Community(models.Model):
 
@@ -14,13 +17,20 @@ class Community(models.Model):
 
     date_creation = models.DateTimeField(default=datetime.datetime.now(), null=True)
 
-    members = models.ManyToManyField(geonode.settings.AUTH_USER_MODEL, through='MembershipCommunity', related_name='communities')
+    #members = models.ManyToManyField(geonode.settings.AUTH_USER_MODEL, through='MembershipCommunity', related_name='communities')
 
-    manager = models.ForeignKey(geonode.settings.AUTH_USER_MODEL,related_name='manager_of_community', db_column='id_manager')
+    owner = models.ForeignKey(geonode.settings.AUTH_USER_MODEL,related_name='owner_of_community', db_column='id_manager')
 
+    def not_need_invitation(self):
+
+        return not self.need_invitation
+
+    def members(self):
+
+        return (ms.member for ms in self.membership_list)
 
     def users(self):
-        return self.members.all()
+        return self.members()
 
     def __unicode__(self):
         return self.name
@@ -28,44 +38,77 @@ class Community(models.Model):
     def invite_someone_to_community(self):
         pass
 
-    def invite_user_to_community(self):
-        pass
+    def invite_user_to_community(self, inviter_user, invited_user):
+
+        invitation = Invitation()
+
+        invitation.inviter = inviter_user
+
+        act = Action()
+
+        act.receiver_message_parameter(self, 'join_us', invited_user )
+
+        act.save()
+
+        invitation.action = act
+
+        invitation.save()
+
 
     def manager_community(self):
         pass
 
     def remove_user(self, a_member):
+
         self.members.remove(a_member)
 
-    def join_us(self, interested_user):
-        pass
+    def join_us(self, interested_user, an_invite_reason='Join us'):
 
-class MembershipCommunity(models.Model):
+        membership = MembershipCommunity()
 
-    member = models.ForeignKey(geonode.settings.AUTH_USER_MODEL)
+        if membership.is_not_included(interested_user, self):
 
-    community = models.ForeignKey(Community)
+            membership.join_us(interested_user, self, an_invite_reason)
 
-    date_joined = models.DateField(default=datetime.datetime.now())
+            membership.save()
 
-    is_blocked = models.BooleanField(default=False)
+            return membership
 
-    is_banned = models.BooleanField(default=False)
+        return None
 
-    invite_reason = models.CharField(max_length=100, null=True, default='Joined us')
+class MembershipCommunity(idehco3.base.models.Membership):
+
+    community = models.ForeignKey(Community, related_name='membership_list')
 
     def is_included(self, a_person, a_community):
 
-        return (self.objects.get(member=a_person, community=a_community)) is not None
+        try:
+
+            return self.__class__.objects.get(member=a_person, community=a_community)
+
+        except MembershipCommunity.DoesNotExist:
+
+            return None
+
+        return result is not None
 
     def is_not_included(self, a_person, a_community):
 
-        return not self.is_person_included_in_community(self, a_person, a_community)
+        return not self.is_included(
+            a_person, a_community)
 
-    def join_us(self, a_person, a_community, an_invited_reason):
+    def join_us(self, a_person, a_community, an_invite_reason='Join us'):
 
-        if self.is_not_included(a_person, a_community):
+              self.community = a_community
 
-            return self.objects.create(member=a_person,community=a_community, invited_reason=an_invited_reason)
+              self.member = a_person
 
-        return None
+              self.invite_reason = an_invite_reason
+
+
+
+
+
+
+
+
