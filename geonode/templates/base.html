@@ -72,7 +72,7 @@
               <a href="{% url "community:list" %}">{% trans "Communities" %}</a>
             </li>
             <li id="nav_sdi_management">
-              <a href="{% url "sdi_management:list" %}">{% trans "SDIs" %}</a>
+              <a href="{% url "sdi_management:list" %}">{% trans "Geoportal SDIs" %}</a>
             </li>
             <li id="nav_geoproject">
               <a href="{% url "geoproject:list" %}">{% trans "Geoprojects" %}</a>
@@ -215,6 +215,8 @@
           <div class="modal-body">
             <ul class="list-unstyled">
               <li><a href="{% url "layer_upload" %}"><i class="fa fa-cloud-upload"></i> {% trans "Upload Layers" %}</a></li>
+              <li class="modal-divider"></li>
+               <li><a href="{% url "dashboard:dashboard_user" %}"><i class="fa fa-fire"></i> {% trans "Dashboard" %}</a></li>
               <li class="modal-divider"></li>
               <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
               <li><a href="{% url "recent-activity" %}"><i class="fa fa-fire"></i> {% trans "Recent Activity" %}</a></li>

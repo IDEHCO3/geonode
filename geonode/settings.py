@@ -48,7 +48,7 @@ os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'development.db'),
+        'NAME': os.path.join(PROJECT_ROOT, 'development2.db'),
     },
     # vector datastore for uploads
     # 'datastore' : {
@@ -316,6 +316,7 @@ INSTALLED_APPS = (
     #REST
     'rest_framework',
     # IDECO
+    'idehco3.base',
     'idehco3.knowledgeManagement',
     'idehco3.community',
     'idehco3.layerEditor',
@@ -324,6 +325,7 @@ INSTALLED_APPS = (
     'idehco3.stream',
     'idehco3.tweeterStream',
     'idehco3.VisualService.visualizerMap',
+    'idehco3.dashboard',
 
 ) + GEONODE_APPS
 

@@ -210,7 +210,7 @@ def execute(sql):
     """
     cursor = db.connections['datastore'].cursor()
     try:
-        cursor.execute(sql)
+        cursor.execute
     except:
         raise
     finally:

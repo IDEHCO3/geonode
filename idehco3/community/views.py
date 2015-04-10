@@ -2,8 +2,10 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.views.generic.edit import CreateView, UpdateView,DeleteView, FormView
 from idehco3.community.models import Community
+from idehco3.community.forms import CommunityForm
+from django.core.mail import send_mail
 
 
 #rest framework
@@ -20,10 +22,30 @@ class CommunityList(generic.ListView):
 class CommunityDetail(generic.DetailView):
     model = Community
 
-class CommunityCreate(CreateView):
+class CommunityJoinUs(generic.DetailView):
     model = Community
+
+class CommunityCreate(FormView):
+
+    #model = Community
+    def __init__(self):
+        community = None
+
+    template_name = 'community/community_form.html'
+
+    form_class = CommunityForm
+
+    def form_valid(self, form):
+
+        self.community = form.instance
+
+        self.community.manager = self.request.user
+
+        return super(CommunityCreate, self).form_valid(form)
+
     def get_success_url(self):
-        return reverse('community:detail', kwargs={'pk': self.object.pk})
+        self.community.save()
+        return reverse('community:detail', kwargs={'pk': self.community.pk})
 
 class CommunityUpdate(UpdateView):
     model = Community
@@ -48,3 +70,14 @@ class CommunityListRest(generics.ListCreateAPIView):
 #class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
     #queryset = Community.objects.all()
     #serializer_class = CommunitySerializer
+
+class InviteSomeone():
+    """
+    subject = form.cleaned_data['subject']
+    message = form.cleaned_data['message']
+    sender = form.cleaned_data['sender']
+    cc_myself = form.cleaned_data['cc_myself']
+
+    recipients = ['info@example.com']
+    """
+   # send_mail("subject", "message", "sender", ["recipients"])
