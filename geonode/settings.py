@@ -323,6 +323,7 @@ INSTALLED_APPS = (
     'idehco3.geoproject',
     'idehco3.stream',
     'idehco3.tweeterStream',
+    'idehco3.VisualService.visualizerMap',
 
 ) + GEONODE_APPS
 

@@ -1,18 +1,6 @@
 {% extends 'site_base.html' %}
 {% load i18n %}
 {% block body %}
-    <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
     <p><a href="{% url 'tweeterStream:create' %}">{% trans 'Create a Tweeter Stream' %}</a></p>
     {% if tweeterstream_list %}
         <ul>

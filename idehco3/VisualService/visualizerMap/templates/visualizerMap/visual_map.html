@@ -1,0 +1,19 @@
+{% load dialogos_tags %}
+{% load bootstrap_tags %}
+{% load staticfiles %}
+<div ng-app="map_detail">
+    <link rel="stylesheet" type="text/css" href="{% static 'visualizerMap/ol.css' %}">
+    <style>
+        .map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <div ng-controller="MapController">
+        <span class="hidden" ng-init="loadMapData(['{{center_x}}','{{center_y}}'], '{{ zoom }}','{{ projection }}', '{{ geoJsonURL }}')"></span>
+        <div id="map" class="map"></div>
+    </div>
+</div>
+<script src="{% static 'visualizerMap/ol.js' %}"></script>
+<script src="{% static 'visualizerMap/angular.min.js' %}"></script>
+<script src="{% static 'visualizerMap/visual_control.js' %}"></script>
