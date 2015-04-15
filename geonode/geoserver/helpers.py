@@ -372,18 +372,18 @@ def gs_slurp(
         # enabled = true, if --skip-unadvertised: advertised = true, but
         # disregard the filter parameter in the case of deleting layers
         resources_for_delete_compare = [
-            k for k in resources_for_delete_compare if k.enabled == "true"]
+            k for k in resources_for_delete_compare if k.enabled in ["true", True]]
         if skip_unadvertised:
             resources_for_delete_compare = [
-                k for k in resources_for_delete_compare if k.advertised != "false"]
+                k for k in resources_for_delete_compare if k.advertised in ["true", True]]
 
     if filter:
         resources = [k for k in resources if filter in k.name]
 
     # filter out layers depending on enabled, advertised status:
-    resources = [k for k in resources if k.enabled == "true"]
+    resources = [k for k in resources if k.enabled in ["true", True]]
     if skip_unadvertised:
-        resources = [k for k in resources if k.advertised != "false"]
+        resources = [k for k in resources if k.advertised in ["true", True]]
 
     # filter out layers already registered in geonode
     layer_names = Layer.objects.all().values_list('typename', flat=True)
@@ -432,6 +432,16 @@ def gs_slurp(
 
             # recalculate the layer statistics
             set_attributes(layer, overwrite=True)
+
+            # Fix metadata links if the ip has changed
+            if not created and settings.SITEURL not in layer.link_set.metadata()[0].url:
+                layer.link_set.metadata().delete()
+                layer.save()
+                metadata_links = []
+                for link in layer.link_set.metadata():
+                    metadata_links.append((link.mime, link.name, link.url))
+                resource.metadata_links = metadata_links
+                cat.save(resource)
 
         except Exception as e:
             if ignore_errors:
@@ -1393,6 +1403,13 @@ def style_update(request, url):
     request.body, which is in this format:
     """
     if request.method in ('POST', 'PUT'):  # we need to parse xml
+        # Need to remove NSx from IE11
+        if "HTTP_USER_AGENT" in request.META:
+            if ('Trident/7.0' in request.META['HTTP_USER_AGENT'] and
+               'rv:11.0' in request.META['HTTP_USER_AGENT']):
+                txml = re.sub(r'xmlns:NS[0-9]=""', '', request.body)
+                txml = re.sub(r'NS[0-9]:', '', txml)
+                request._body = txml
         tree = ET.ElementTree(ET.fromstring(request.body))
         elm_namedlayer_name = tree.findall(
             './/{http://www.opengis.net/sld}Name')[0]
