@@ -34,7 +34,7 @@ class Membership(models.Model):
 
     def is_not_included(self, a_person, an_entity):
 
-        raise NotImplementedError("Please Implement this method")
+        return not self.is_included( a_person, an_entity)
 
 
     def join_us(self, a_person, an_entity, an_invited_reason):

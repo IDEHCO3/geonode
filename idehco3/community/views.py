@@ -81,3 +81,4 @@ class InviteSomeone():
     recipients = ['info@example.com']
     """
    # send_mail("subject", "message", "sender", ["recipients"])
+

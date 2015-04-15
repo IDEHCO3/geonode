@@ -5,14 +5,15 @@ from django.views import generic
 
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
-from idehco3.geoproject.models import GeoProject
+from idehco3.geoproject.models import Project
 
 #List GeoProjects
 class GeoProjectList(generic.ListView):
-    model = GeoProject
+    model = Project
+    template_name = 'geoproject/geoproject_index.html'
 
 class GeoProjectCreate(CreateView):
-    model = GeoProject
+    model = Project
     def get_success_url(self):
         return reverse('geoproject:detail', kwargs={'pk': self.object.pk})
 

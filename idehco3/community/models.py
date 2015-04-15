@@ -84,13 +84,15 @@ class MembershipCommunity(idehco3.base.models.Membership):
 
         try:
 
-            return self.__class__.objects.get(member=a_person, community=a_community)
+            self.__class__.objects.get(member=a_person, community=a_community)
+
+            return True
 
         except MembershipCommunity.DoesNotExist:
 
-            return None
+            return False
 
-        return result is not None
+
 
     def is_not_included(self, a_person, a_community):
 
