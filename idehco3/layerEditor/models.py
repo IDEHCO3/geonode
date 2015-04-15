@@ -3,7 +3,7 @@ from django.db import models
 import shapefile
 from subprocess import call
 import os
-from geonode.layers.utils import upload
+from geonode.layers.utils import upload, file_upload
 # Create your models here.
 
 
@@ -83,7 +83,8 @@ class LayerBuilder():
         shape_in_memory.save(self.path_file)
         self.__create_projection()
 
-        upload(self.path_file + ".shp", user=user, verbosity=2)
+        #output = upload(self.path_file + ".shp", verbosity=2)
+        output = file_upload(self.path_file + ".shp", user=user)
 
         command_remove_shape = "rm -f "+self.path_file+".*"
         call(command_remove_shape, shell=True)

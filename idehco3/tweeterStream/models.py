@@ -87,10 +87,10 @@ class GeoJson:
 def getGeoJsonTwitter(querySearch):
     if querySearch == "" or querySearch == None:
         return ""
-    consumer_key = ''
-    consumer_secret = ''
-    access_token_secret = ''
-    access_token = ''
+    consumer_key = 'ooDmh50X1AUe51gFADaKGIMmI' #owner idehco3 - id: 3062379387
+    consumer_secret = 'p2o4S5HyUKwcUfdChXCj9bO0HxhLCrTwhLgjBolKC6JeXoBcUF'
+    access_token_secret = 'Qaft1GE1QF5i8YOGIKJLyK6hDkjcbIvkVcnjVEymMGLTo'
+    access_token = '3062379387-kH3SFHGabF0RR0afgCIRQLgcVHMlxnDf3HKq2m3'
     auth = TwitterAuth(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = TwitterAPI(auth.auth)
