@@ -1,11 +1,36 @@
 # Create your views here.
-from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from idehco3.tweeterStream.models import *
-from idehco3.tweeterStream.forms import *
-from django.views.generic.edit import FormView
+
+import simplejson
+from django.http import HttpResponse
+
+class JsonResponse(HttpResponse):
+    """
+        JSON Response
+    """
+    def __init__(self, content, mimetype='application/json', status=None, content_type=None):
+        super(JsonResponse, self).__init__(
+            content=simplejson.dumps(content),
+            mimetype=mimetype,
+            status=status,
+            content_type=content_type
+        )
+
+def getTwitterMapData(request):
+    search = ""
+    if not request.POST.has_key("searchTweets") and not request.GET.has_key("searchTweets"):
+        return JsonResponse("")
+
+    if request.method == "POST":
+        search = request.POST["searchTweets"]
+    if request.method == "GET":
+        search = request.GET["searchTweets"]
+
+    data = getGeoJsonTwitter(search)
+    return JsonResponse(data)
 
 
 class TweeterStreamList(generic.ListView):
