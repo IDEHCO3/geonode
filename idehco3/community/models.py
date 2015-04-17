@@ -77,6 +77,28 @@ class Community(models.Model):
 
         return None
 
+    def get_main_layer(self):
+        composer = self.composer_community.all()
+        if composer:
+            return composer[0].main_layer
+        else:
+            return None
+
+    def get_background_layers(self):
+        composer = self.composer_community.all()
+        if composer:
+            return composer[0].composer_layer_community
+        else:
+            return None
+
+    def not_has_main_layer(self):
+        composer = self.composer_community.all()
+        if composer:
+            return False
+        else:
+            return True
+
+
 class MembershipCommunity(idehco3.base.models.Membership):
 
     community = models.ForeignKey(Community, related_name='membership_list')
@@ -109,16 +131,16 @@ class MembershipCommunity(idehco3.base.models.Membership):
 class ComposerCommunity(models.Model):
 
     headline = models.TextField(null=True, blank=True)
-    #banner =
+    #banner = image
 
-    community = models.ForeignKey(Community)
-    main_layer = models.ForeignKey(Layer)
+    community = models.ForeignKey(Community, related_name="composer_community")
+    main_layer = models.ForeignKey(Layer, related_name="main_layer")
 
 class ComposerLayer(models.Model):
 
     checked = models.BooleanField()
-    composer_community = models.ForeignKey(ComposerCommunity)
-    layer = models.ForeignKey(Layer)
+    composer_community = models.ForeignKey(ComposerCommunity, related_name="composer_layer_community")
+    layer = models.ForeignKey(Layer, related_name="composer_layer_layers")
 
 
 

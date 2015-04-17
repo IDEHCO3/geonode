@@ -83,8 +83,7 @@ class LayerBuilder():
         shape_in_memory.save(self.path_file)
         self.__create_projection()
 
-        #output = upload(self.path_file + ".shp", verbosity=2)
-        output = file_upload(self.path_file + ".shp", user=user)
-
+        file = self.path_file + ".shp"
+        file_upload(file, user=user)
         command_remove_shape = "rm -f "+self.path_file+".*"
         call(command_remove_shape, shell=True)

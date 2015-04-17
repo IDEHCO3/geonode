@@ -8,6 +8,9 @@
     <div class="row" ng-app="layer_app">
         <div class="row page-header">
             <h4><b>{% trans 'New Layer' %}</b></h4>
+            {% if community %}
+                <h5>{% trans 'Layer to community: ' %}{{ community.name }}</h5>
+            {% endif %}
         </div>
         <div class="row" ng-controller="LayerController as layerCtrl">
 
@@ -61,7 +64,7 @@
             <div class="row page-header">
                 <h5><b>{% trans 'list of attributes' %}</b></h5>
 
-                <form role="form" action="{% url 'layerEditor:create_layer' %}'" method="post">
+                <form role="form" action="{% url 'layerEditor:create_layer' community.id %}'" method="post">
 
                     <layer-input></layer-input>
 
@@ -77,4 +80,4 @@
     <script src="{% static 'layerEditor/new_layer.js' %}"></script>
     {% else %}
         <p>{% trans 'You need to be logged in.' %}</p>
-    {%  endif %}
+    {% endif %}
