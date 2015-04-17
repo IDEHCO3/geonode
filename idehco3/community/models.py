@@ -5,6 +5,7 @@ import datetime
 import geonode
 import idehco3
 from idehco3.base.models import Invitation, Action, Membership
+from geonode.layers.models import Layer
 
 
 class Community(models.Model):
@@ -104,6 +105,21 @@ class MembershipCommunity(idehco3.base.models.Membership):
               self.member = a_person
 
               self.invite_reason = an_invite_reason
+
+class ComposerCommunity(models.Model):
+
+    headline = models.TextField(null=True, blank=True)
+    #banner =
+
+    community = models.ForeignKey(Community)
+    main_layer = models.ForeignKey(Layer)
+
+class ComposerLayer(models.Model):
+
+    checked = models.BooleanField()
+    composer_community = models.ForeignKey(ComposerCommunity)
+    layer = models.ForeignKey(Layer)
+
 
 
 
