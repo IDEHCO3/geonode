@@ -68,14 +68,21 @@
             <li id="nav_groups">
               <a href="{% url "group_list" %}">{% trans "Groups" %}</a>
             </li>
-            <li id="nav_Communities">
-              <a href="{% url "community:list" %}">{% trans "Communities" %}</a>
-            </li>
-            <li id="nav_sdi_management">
-              <a href="{% url "sdi_management:list" %}">{% trans "Geoportal SDIs" %}</a>
-            </li>
-            <li id="nav_geoproject">
-              <a href="{% url "geoproject:list" %}">{% trans "Geoprojects" %}</a>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">IDECO3
+                <span class="caret"></span>
+                <ul class="dropdown-menu">
+                    <li id="nav_Communities">
+                      <a href="{% url "community:list" %}">{% trans "Communities" %}</a>
+                    </li>
+                    <li id="nav_sdi_management">
+                      <a href="{% url "sdi_management:list" %}">{% trans "Geoportal SDIs" %}</a>
+                    </li>
+                    <li id="nav_geoproject">
+                      <a href="{% url "geoproject:list" %}">{% trans "Geoprojects" %}</a>
+                    </li>
+                </ul>
+              </a>
             </li>
             {% endblock %}
           </ul>
@@ -115,7 +122,7 @@
       </div>
     </nav>
     {% endblock header %}
-
+    <div class="page-header"></div>
     <div class="alert alert-danger alert-dismissible" role="alert" id="ieflag" style="display:none">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <h1>You are using an outdated browser that is not supported by GeoNode.</h1>
