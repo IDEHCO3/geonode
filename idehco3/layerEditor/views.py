@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from idehco3.layerEditor.models import LayerBuilder, ShapefileWrite
+from idehco3.layerEditor.models import *
 import os
 from idehco3.community.models import Community, ComposerCommunity
 
@@ -12,6 +12,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # Create your views here.
 def new_layer(request, pk):
     community = Community.objects.get(pk=pk)
+
     context = {
         "request": request,
         "community": community
@@ -21,21 +22,20 @@ def new_layer(request, pk):
 
 def create_layer(request, pk):
     community = Community.objects.get(pk=pk)
-    composer = ComposerCommunity()
 
     layer_name = request.POST["layer_name"]
     layer_type = request.POST["layer_type"]
 
     if layer_name == "":
-        return HttpResponseRedirect(reverse('layerEditor:new_layer'))
+        return HttpResponseRedirect(reverse('home'))
 
     attributes = getAttributesFromRequest(request)
-
     layer = LayerBuilder(layer_name)
 
     shape = layer.create_shape(layer_type, attributes)
     layer.save_shape(shape_in_memory=shape, user=request.user)
 
+    save_layer_in_community(layer_name, community)
 
     arguments = "?layer=geonode:"+layer_name.lower()
     arguments = arguments.encode("latin_1")
