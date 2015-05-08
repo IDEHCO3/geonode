@@ -1,39 +1,41 @@
-from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
-from geonode.people.models import Profile
-
-import json
-import shapefile as sf
-from idehco3.layerEditor.models import LayerBuilder, ShapefileWrite
-from subprocess import call
+from idehco3.layerEditor.models import *
 import os
-from geonode.layers.utils import upload
+from idehco3.community.models import Community, ComposerCommunity
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # Create your views here.
-def new_layer(request):
-    return render_to_response('layerEditor/new_layer.html',
-        RequestContext(request, {"request": request}))
+def new_layer(request, pk):
+    community = Community.objects.get(pk=pk)
 
-def create_layer(request):
+    context = {
+        "request": request,
+        "community": community
+    }
+    return render_to_response('layerEditor/new_layer.html',
+        RequestContext(request, context))
+
+def create_layer(request, pk):
+    community = Community.objects.get(pk=pk)
 
     layer_name = request.POST["layer_name"]
     layer_type = request.POST["layer_type"]
 
     if layer_name == "":
-        return HttpResponseRedirect(reverse('layerEditor:new_layer'))
+        return HttpResponseRedirect(reverse('home'))
 
     attributes = getAttributesFromRequest(request)
-
     layer = LayerBuilder(layer_name)
 
     shape = layer.create_shape(layer_type, attributes)
     layer.save_shape(shape_in_memory=shape, user=request.user)
+
+    save_layer_in_community(layer_name, community)
 
     arguments = "?layer=geonode:"+layer_name.lower()
     arguments = arguments.encode("latin_1")

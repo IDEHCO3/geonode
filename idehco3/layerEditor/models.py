@@ -3,7 +3,9 @@ from django.db import models
 import shapefile
 from subprocess import call
 import os
-from geonode.layers.utils import upload
+from geonode.layers.utils import file_upload
+from geonode.layers.models import Layer
+from idehco3.community.models import *
 # Create your models here.
 
 
@@ -83,7 +85,15 @@ class LayerBuilder():
         shape_in_memory.save(self.path_file)
         self.__create_projection()
 
-        upload(self.path_file + ".shp", user=user, verbosity=2)
-
+        file = self.path_file + ".shp"
+        file_upload(file, user=user)
         command_remove_shape = "rm -f "+self.path_file+".*"
         call(command_remove_shape, shell=True)
+
+def save_layer_in_community(layer_name, community):
+    layer = Layer.objects.get(name=layer_name.lower())
+    composer_community = ComposerCommunity()
+    composer_community.community = community
+    composer_community.headline = ""
+    composer_community.main_layer = layer
+    composer_community.save()

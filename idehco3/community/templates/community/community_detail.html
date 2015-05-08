@@ -6,6 +6,10 @@
     <p>{{ community.description }}</p>
     <p> {% trans 'Creator: ' %}{{ community.owner }}</p>
 
+    {%  if community.not_has_main_layer %}
+        <p><a href="{% url 'layerEditor:new_layer' community.id %}">Create the main layer of community</a></p>
+    {% endif %}
+
     <p> {% trans 'Members: ' %}</p>
     <ul>
             {% for user in community.users %}
@@ -15,5 +19,5 @@
      <ul>   {% if community.not_need_invitation and request.user.is_not_member %}
                 <a href="{% url 'community:join_us' community.id %}"> {% trans 'Join-us' %}</a>
             {% endif %}
-     </ul>
+    </ul>
 {% endblock %}
