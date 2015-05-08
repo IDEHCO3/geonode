@@ -12,8 +12,8 @@
                  <li>{{ user }}</li>
             {% endfor %}
     </ul>
-     <ul>   {% if community.not_need_invitation %}
-                <a href="{% url 'community:join_us' community.id %}"> {% trans 'Join-us ' %}</a>
+     <ul>   {% if community.not_need_invitation and request.user.is_not_member %}
+                <a href="{% url 'community:join_us' community.id %}"> {% trans 'Join-us' %}</a>
             {% endif %}
      </ul>
 {% endblock %}

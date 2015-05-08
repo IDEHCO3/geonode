@@ -29,7 +29,7 @@ from django.conf import settings
 from django.db.models import signals
 from django.utils.translation import ugettext as _
 
-from actstream.exceptions import ModelNotActionable
+from actstream.exceptions import  ModelNotActionable
 
 from geonode.layers.models import Layer
 from geonode.maps.models import Map

@@ -30,6 +30,7 @@ class TypeOfProject(models.Model):
     description = models.CharField(max_length=500, null=True, blank=True)
 
 
+
 class MembershipProject(idehco3.base.models.Membership):
 
     project = models.ForeignKey(Project, related_name='membership_list')

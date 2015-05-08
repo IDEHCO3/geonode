@@ -30,7 +30,18 @@
 					<h3 class="panel-title">My Communities</h3>
 					<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 				</div>
-				<div class="panel-body">Panel content</div>
+				<div class="panel-body">
+                    {% if view.communities %}
+                        <ul>
+                            {% for community in view.communities %}
+                                <li><a href="{% url 'community:detail' community.id %}">{{ community.name }}</a><a href="{% url 'community:update' community.id %}">  {% trans 'Update' %}</a><a href="{% url 'community:delete' community.id %}">  {% trans 'Delete' %}</a></li>
+
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p> {% trans 'No communities are available' %}</p>
+                    {% endif %}
+				</div>
 		</div>
 	</div>
 	</div>

@@ -23,7 +23,15 @@ class CommunityDetail(generic.DetailView):
     model = Community
 
 class CommunityJoinUs(generic.DetailView):
+
     model = Community
+
+    def get(self, request, *args, **kwargs):
+
+       self.get_object().join_us(request.user)
+
+       return super(CommunityJoinUs, self).get(self, request, *args, **kwargs)
+
 
 class CommunityCreate(FormView):
 

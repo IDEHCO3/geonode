@@ -24,12 +24,12 @@ class Membership(models.Model):
 
     invite_reason = models.CharField(max_length=300, null=True, default='Joined us')
 
-    member = models.ForeignKey(geonode.settings.AUTH_USER_MODEL, db_column='member_id')
+    member = models.OneToOneField(geonode.settings.AUTH_USER_MODEL, db_column='member_id')
 
 
     def is_included(self, a_person, an_entity):
 
-        raise NotImplementedError("Please Implement this method")
+        raise NotImplementedError("Please this method must be implemented")
 
 
     def is_not_included(self, a_person, an_entity):
@@ -39,7 +39,7 @@ class Membership(models.Model):
 
     def join_us(self, a_person, an_entity, an_invited_reason):
 
-        raise NotImplementedError("Please Implement this method")
+        raise NotImplementedError("Please this method must be implemented")
 
     def is_owner(self):
 

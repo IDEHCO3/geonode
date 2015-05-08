@@ -3,6 +3,7 @@ import datetime
 # Create your models here.
 #from geonode.people.models import Profile
 import geonode
+from geonode.people.models import Profile
 import idehco3
 from idehco3.base.models import Invitation, Action, Membership
 
@@ -24,6 +25,10 @@ class Community(models.Model):
     def not_need_invitation(self):
 
         return not self.need_invitation
+
+    def can_join(self):
+
+        self
 
     def members(self):
 
