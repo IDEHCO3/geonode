@@ -7,6 +7,7 @@ from geonode.people.models import Profile
 import idehco3
 from idehco3.base.models import Invitation, Action, Membership
 from geonode.layers.models import Layer
+from idehco3.utils.utils import getGeoJsonURLFromLayer
 
 
 class Community(models.Model):
@@ -88,6 +89,13 @@ class Community(models.Model):
             return composer[0].main_layer
         else:
             return None
+
+    def get_geojson_url(self):
+        layer = self.get_main_layer()
+        url = ""
+        if layer != None:
+            url = getGeoJsonURLFromLayer(layer)
+        return url
 
     def get_background_layers(self):
         composer = self.composer_community.all()

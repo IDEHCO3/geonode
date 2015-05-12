@@ -3,7 +3,8 @@ from geonode.people.models import Profile
 
 # Create your models here.
 import tweepy
-import unicodedata
+
+from idehco3.utils.utils import GeoJson, unicodeToString
 
 class TweeterStream(models.Model):
 
@@ -45,44 +46,6 @@ class TwitterAPI:
     def search(self, queryString):
         self.api.search(queryString)
 
-class GeoJson:
-    def __init__(self):
-        self.geojson = {"type": "FeatureCollection"}
-        self.geojson["features"] = []
-
-    def addFeature(self, geometry, properties):
-        if geometry or properties:
-            feature = {"type": "Feature", "geometry": geometry, "properties": properties}
-            self.geojson["features"].append(feature)
-
-    def addGeometry(self, type, coordinates):
-        if type == "Line":
-            type = "LineString"
-        if type == "MultiLine":
-            type = "MultiLineString"
-        types = ["Point", "LineString", "Polygon", "MultiPoint", "MultiLineString", "MultiPolygon"]
-        if type or coordinates or type not in types:
-            geometry = {"type": type, "coordinates": coordinates}
-            return geometry
-        else:
-            return None
-
-    def addGeometryCollection(self, geometries):
-
-        if type(geometries) is not dict:
-            return None
-
-        if geometries and geometries[0].has_key("type") and geometries[0].has_key("coordinates"):
-            return {"type": "GeometryCollection", "geometries": geometries}
-        else:
-            return None
-
-    def addCRS(self, projection):
-        self.geojson["crs"] = {"type": "name", "properties": {"name": projection}}
-
-    def getGeoJsonObject(self):
-        return self.geojson
-
 
 def getGeoJsonTwitter(querySearch):
     if querySearch == "" or querySearch == None:
@@ -113,7 +76,4 @@ def getGeoJsonTwitter(querySearch):
     if int_count_point == 0:
         return ""
     else:
-        return geojson_object.getGeoJsonObject()
-
-def unicodeToString(text):
-    return unicodedata.normalize("NFKD", text).encode('ascii', 'ignore')
+        return geojson_object.getGeoJsonData()

@@ -3,21 +3,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from idehco3.tweeterStream.models import *
-
-import simplejson
-from django.http import HttpResponse
-
-class JsonResponse(HttpResponse):
-    """
-        JSON Response
-    """
-    def __init__(self, content, mimetype='application/json', status=None, content_type=None):
-        super(JsonResponse, self).__init__(
-            content=simplejson.dumps(content),
-            mimetype=mimetype,
-            status=status,
-            content_type=content_type
-        )
+from idehco3.utils.utils import JsonResponse
 
 def getTwitterMapData(request):
     search = ""

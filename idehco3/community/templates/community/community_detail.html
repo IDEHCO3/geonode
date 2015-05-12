@@ -1,4 +1,5 @@
 {% extends 'site_base.html' %}
+{% load visualizer_map %}
 {% load i18n %}
 {% block body %}
     <h1>{{ community.name }}</h1>
@@ -6,7 +7,7 @@
     <p>{{ community.description }}</p>
     <p> {% trans 'Creator: ' %}{{ community.owner }}</p>
 
-    {%  if community.not_has_main_layer %}
+    {% if community.not_has_main_layer %}
         <p><a href="{% url 'layerEditor:new_layer' community.id %}">Create the main layer of community</a></p>
     {% endif %}
 
@@ -20,4 +21,10 @@
                 <a href="{% url 'community:join_us' community.id %}"> {% trans 'Join-us' %}</a>
             {% endif %}
     </ul>
+
+    {% if not community.not_has_main_layer %}
+        {% with zoom=1 projection='EPSG:4326' center_longitude=0 center_latitude=0 geoJsonURL=community.get_geojson_url %}
+            {% visual_map %}
+        {% endwith %}
+    {% endif %}
 {% endblock %}
