@@ -2,6 +2,7 @@
 import unicodedata
 import simplejson
 from django.http import HttpResponse
+import shapefile
 
 class JsonResponse(HttpResponse):
     """
@@ -57,6 +58,21 @@ def getGeoJsonURLFromLayer(layer):
     url = "http://localhost:8080/geoserver/geonode/wfs?service=wfs&version=2.0.0&request=GetFeature&"
     url = url + "typeNames=" + unicodeToString(layer.typename) + "&srsName=EPSG:4326&outputformat=application/json"
     return url
+
+def getGeoJsonFromLayer(layer):
+    layer_file = layer.get_base_file()[0]
+    if layer_file == None:
+        print "There isn't a reference to the shapefile."
+        return None
+
+    layer_path = unicodeToString(layer_file.file._get_path())
+    shape_file = shapefile.Reader(layer_path)
+    geojson_shape = GeoJson()
+    #TODO - It is need to iterate for shape_file records and put it inside geojson_shape, and in the end return the geojson_file
+
+    return geojson_shape
+
+
 
 def unicodeToString(text):
     return unicodedata.normalize("NFKD", text).encode('ascii', 'ignore')
