@@ -52,7 +52,7 @@ var map = new ol.Map({
 
             $http.get(url).success(function(data){
                 scope.map_data = data;
-                var source = new ol.source.GeoJSON({'object': data, projection: projection_base});
+                var source = new ol.source.GeoJSON({'object': scope.map_data, projection: projection_base});
                 var layer = new ol.layer.Vector({
                     source: source
                 });
@@ -64,14 +64,17 @@ var map = new ol.Map({
 
         };
 
-        scope.loadMapData = function(center, zoom, projection, geoJsonURL){
+        scope.loadMapData = function(center, zoom, projection, geoJsonUrl){
 
             center = [parseFloat(center[0]), parseFloat(center[1])];
             zoom = parseInt(zoom);
             var center_p = new ol.proj.transform(center, projection, projection_base);
             map.getView().setCenter(center_p);
             map.getView().setZoom(zoom);
-            scope.loadMapDataUrl(geoJsonURL);
+
+            scope.loadMapDataUrl(geoJsonUrl);
+
         };
+
     }]);
 })();

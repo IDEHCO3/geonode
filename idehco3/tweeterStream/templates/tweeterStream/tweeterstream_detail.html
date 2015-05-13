@@ -15,7 +15,7 @@
 
     <p>{{ tweeterstream.description }}</p>
 
-    {% with zoom=tweeterstream.zoom projection='EPSG:4326' center_longitude=tweeterstream.center_longitude center_latitude=tweeterstream.center_latitude geoJsonURL='/tweeterStream/geoJsonTwitter?searchTweets=GeolocalizaTest2' %}
+    {% with zoom=tweeterstream.zoom projection='EPSG:4326' center_longitude=tweeterstream.center_longitude center_latitude=tweeterstream.center_latitude url='/tweeterStream/geoJsonTwitter?searchTweets=GeolocalizaTest2' %}
         {% visual_map %}
     {% endwith %}
 {% endblock %}
