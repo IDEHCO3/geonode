@@ -24,7 +24,7 @@
 
     <div class="row">
         {% if not community.not_has_main_layer %}
-            {% with zoom=1 projection='EPSG:4326' center_longitude=0 center_latitude=0 url=community.get_main_layer.typename %}
+            {% with zoom=1 projection='EPSG:4326' center_longitude=0 center_latitude=0 url=community.get_geojson_url %}
                 {% visual_map %}
             {% endwith %}
         {% endif %}
