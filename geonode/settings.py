@@ -47,18 +47,22 @@ os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8000'
 # Defines settings for development
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'development2.db'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geonode2',
+        'USER' : 'geonode',
+        'PASSWORD' : 'geonode',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
     },
-    # vector datastore for uploads
-    # 'datastore' : {
-    #    'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    #    'NAME': '',
-    #    'USER' : '',
-    #    'PASSWORD' : '',
-    #    'HOST' : '',
-    #    'PORT' : '',
-    # }
+    #vector datastore for uploads
+    'datastore' : {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geonode-imports',
+        'USER' : 'geonode',
+        'PASSWORD' : 'geonode',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
+    }
 }
 
 # Local time zone for this installation. Choices can be found here:
@@ -326,6 +330,7 @@ INSTALLED_APPS = (
     'idehco3.tweeterStream',
     'idehco3.VisualService.visualizerMap',
     'idehco3.dashboard',
+    'idehco3.VisualService.layerEditorNew',
 
 ) + GEONODE_APPS
 

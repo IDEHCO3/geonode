@@ -18,7 +18,7 @@ var geojsonObject = {
         'coordinates': [-43.0, -22.0]
       }
     }]
-}
+};
 
 var source_base = new ol.layer.Tile({
     source: new ol.source.OSM()

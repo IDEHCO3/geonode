@@ -109,6 +109,7 @@ urlpatterns = patterns('',
                        (r'^stream/', include('idehco3.stream.urls', namespace='stream')),
                        (r'^tweeterStream/', include('idehco3.tweeterStream.urls', namespace='tweeterStream')),
                        (r'^dashboard/', include('idehco3.dashboard.urls', namespace='dashboard')),
+                       (r'^layerEditorNew/', include('idehco3.VisualService.layerEditorNew.urls', namespace='editLayerNew')),
 
                        url(r'', include(api.urls)),
                        )
