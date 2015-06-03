@@ -23,7 +23,6 @@ var geojsonObject = {
     }]
 };
 
-var a =  new ol.source.Vector({features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)});
 var b = new ol.source.GeoJSON({'object': geojsonObject, projection: 'EPSG:3857'});
 var source2 = new ol.layer.Vector({source : b});
 
@@ -59,6 +58,7 @@ var featureOverlay = new ol.FeatureOverlay({
   })
 });
 featureOverlay.setMap(map);
+featureOverlay.setFeatures(new ol.Collection(source2.getSource().getFeatures()));
 
 var modify = new ol.interaction.Modify({
   features: featureOverlay.getFeatures(),
