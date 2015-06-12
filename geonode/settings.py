@@ -48,7 +48,7 @@ os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'geonode2',
+        'NAME': 'geonode',
         'USER' : 'geonode',
         'PASSWORD' : 'geonode',
         'HOST' : 'localhost',

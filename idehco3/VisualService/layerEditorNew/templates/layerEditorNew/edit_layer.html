@@ -16,18 +16,19 @@
 
 <div class="row-fluid">
   <div class="span12">
-    <div id="map" class="map"></div>
+      <div id="map" class="map"></div>
   </div>
   <form class="form-inline">
-    <label>Geometry type &nbsp;</label>
-    <select id="type">
-      <option value="Point">Point</option>
-      <option value="LineString">LineString</option>
-      <option value="Polygon">Polygon</option>
-    </select>
+      <label>Geometry type &nbsp;</label>
+      <select id="type">
+          <option value="Point">Point</option>
+          <option value="LineString">LineString</option>
+          <option value="Polygon">Polygon</option>
+      </select>
+      <div id="data_geo" class="hidden">{{ layer.geom.geojson }} </div>
+      <input type="button" class="btn btn-primary" id="writeLayer" value="{% trans 'Save' %}"/>
   </form>
 </div>
-<div id="data_geo" class="hidden">{{ layer.geom.geojson }} </div>
 </div>
 <script src="{% static 'layerEditorNew/edit_layer.js' %}"></script>
 {% endblock %}

@@ -94,3 +94,13 @@ typeSelect.onchange = function(e) {
 };
 
 addInteraction();
+
+var save = function(){
+  var format = new ol.format.GeoJSON();
+  var features = map.getInteractions().getFeature();
+  var json = format.writeFeatures(features);
+  var text = JSON.stringify(json);
+  console.log(text);
+}
+
+$("#writeLayer").on('click', save);
