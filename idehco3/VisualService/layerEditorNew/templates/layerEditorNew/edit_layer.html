@@ -17,8 +17,38 @@
 <div class="row-fluid">
   <div class="span12">
       <div id="map" class="map"></div>
+      <div>
+      <label>Interaction type:  &nbsp;</label>
+      <label>draw</label>
+      <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
+      <label>modify</label>
+      <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+    </div>
+    <div>
+      <label>Geometry type</label>
+      <select id="geom_type">
+        <option value="Point" selected>Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+      </select>
+    </div>
+    <div>
+      <label>Data type</label>
+      <select id="data_type">
+        <option value="GeoJSON" selected>GeoJSON</option>
+        <option value="KML">KML</option>
+        <option value="GPX">GPX</option>
+      </select>
+    </div>
+      <div id="delete" style="text-decoration:underline;cursor:pointer">
+        Delete all features
+      </div>
+      <label>Data:</label>
+      <input type="button" value="save" onclick="save()" />
+      <div id="data_geo" class="hidden">{{ layer.geom.geojson }} </div>
+      <textarea id="data" rows="12" style="width:100%"></textarea>
   </div>
-  <form class="form-inline">
+  <!--<form class="form-inline">
       <label>Geometry type &nbsp;</label>
       <select id="type">
           <option value="Point">Point</option>
@@ -26,7 +56,7 @@
           <option value="Polygon">Polygon</option>
       </select>
       <div id="data_geo" class="hidden">{{ layer.geom.geojson }} </div>
-      <input type="button" class="btn btn-primary" id="writeLayer" value="{% trans 'Save' %}"/>
+      <input type="button" class="btn btn-primary" id="writeLayer" value="{% trans 'Save' %}"/>-->
   </form>
 </div>
 </div>
