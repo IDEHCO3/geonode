@@ -8,6 +8,8 @@ import idehco3
 from idehco3.base.models import Invitation, Action, Membership
 from geonode.layers.models import Layer
 from idehco3.utils.utils import getGeoJsonURLFromLayer
+from django.contrib.gis.db import models as modelsGis
+from django_pgjson.fields import JsonBField
 
 
 class Community(models.Model):
@@ -156,6 +158,12 @@ class ComposerLayer(models.Model):
     checked = models.BooleanField()
     composer_community = models.ForeignKey(ComposerCommunity, related_name="composer_layer_community")
     layer = models.ForeignKey(Layer, related_name="composer_layer_layers")
+
+
+class Community_Information(modelsGis.Model):
+
+    json_column = JsonBField()  # can pass attributes like null, blank, ecc.
+    geom = modelsGis.GeometryField(null=True)
 
 
 
